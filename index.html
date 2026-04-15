@@ -2,9 +2,141 @@
 <html>
 <head>
   <title>Proyectos del Colegio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f9;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 10px;
+      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-ir {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-config {
+      background: #333;
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 80%;
+      margin: 5px;
+      padding: 5px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>PROYECTOS DEL COLEGIO</h1>
-  <p>Mi primera página</p>
+
+<h1>PROYECTOS DEL COLEGIO</h1>
+
+<button class="btn btn-config" onclick="modoAdmin()">Configurar</button>
+
+<div id="contenedor"></div>
+
+<script>
+let proyectos = [];
+let admin = false;
+
+// Cargar JSON
+fetch("config.json")
+  .then(res => res.json())
+  .then(data => {
+    proyectos = data;
+    mostrar();
+  });
+
+// Mostrar proyectos
+function mostrar() {
+  let html = "";
+
+  proyectos.forEach((p, i) => {
+
+    if (p.activo || admin) {
+
+      html += `<div class="card">
+        <h3>${p.nombre}</h3>
+      `;
+
+      if (p.activo) {
+        html += `<button class="btn btn-ir" onclick="ir('${p.url}')">Abrir</button>`;
+      } else {
+        html += `<p style="color:red;">Inactivo</p>`;
+      }
+
+      // modo admin
+      if (admin) {
+        html += `
+          <br><br>
+          <input placeholder="URL" value="${p.url}" onchange="cambiarURL(${i}, this.value)">
+          <br>
+          <label>
+            <input type="checkbox" ${p.activo ? "checked" : ""} onchange="toggle(${i})">
+            Activo
+          </label>
+        `;
+      }
+
+      html += `</div>`;
+    }
+
+  });
+
+  document.getElementById("contenedor").innerHTML = html;
+}
+
+// Ir a proyecto
+function ir(url) {
+  window.open(url, "_blank");
+}
+
+// Activar admin
+function modoAdmin() {
+  let clave = prompt("Ingrese clave:");
+
+  if (clave === "1234") {
+    admin = true;
+    mostrar();
+    alert("Modo configuración activado.\nRecuerda actualizar manualmente config.json");
+  } else {
+    alert("Clave incorrecta");
+  }
+}
+
+// Cambiar URL (solo visual)
+function cambiarURL(i, valor) {
+  proyectos[i].url = valor;
+}
+
+// Activar/desactivar
+function toggle(i) {
+  proyectos[i].activo = !proyectos[i].activo;
+}
+</script>
+
 </body>
 </html>
