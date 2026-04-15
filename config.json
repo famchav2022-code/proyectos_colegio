@@ -1,12 +1,26 @@
 [
   {
-    "nombre": "Proyectos de Investigación",
-    "url": "https://tu-app-investigacion",
+    "nombre": "EUREKA",
+    "descripcion": "Feria de Ciencias 2026",
+    "url": "https://paradise.sieweb.com.pe/sistema/intranet/",
+    "activo": false
+  },
+  {
+    "nombre": "JUNIOR RESEARCH",
+    "descripcion": "Revista Científica",
+    "url": "https://script.google.com/macros/s/AKfycbxu0NGtm0ut1RVTgBybYr30MhQ4KQX0uzSJGEN4bfnIYdHlvxeXygkhu6E2OuBbFtjc/exec",
     "activo": true
   },
   {
-    "nombre": "Feria de Ciencias",
-    "url": "",
+    "nombre": "CANGURO MATEMÁTICO",
+    "descripcion": "Olimpiadas Escolares de Matemática",
+    "url": "https://paradise.sieweb.com.pe/",
+    "activo": false
+  },
+  {
+    "nombre": "PRE-U",
+    "descripcion": "Ciclo Preuniversitario / Extracurricular",
+    "url": "https://paradise.sieweb.com.pe/",
     "activo": false
   }
 ]
