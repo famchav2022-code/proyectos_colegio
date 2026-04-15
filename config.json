@@ -1,7 +1,12 @@
 [
   {
-    "nombre": "Proyecto de Investigación",
-    "url": "https://google.com",
+    "nombre": "Proyectos de Investigación",
+    "url": "https://tu-app-investigacion",
     "activo": true
+  },
+  {
+    "nombre": "Feria de Ciencias",
+    "url": "",
+    "activo": false
   }
 ]
