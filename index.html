@@ -7,100 +7,121 @@
 
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
       margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364);
       color: white;
       text-align: center;
+      overflow-x: hidden;
     }
 
-    .header img {
-      width: 120px;
+    .header {
+      padding: 30px 20px 10px;
+    }
+
+    .logo-box {
+      background: white;
+      display: inline-block;
+      padding: 10px;
+      border-radius: 12px;
       margin-bottom: 10px;
     }
 
+    .logo-box img {
+      width: 100px;
+    }
+
     h1 {
-      margin-bottom: 30px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-size: 26px;
+      letter-spacing: 2px;
+      margin: 10px 0 5px;
+    }
+
+    .sub {
+      font-size: 14px;
+      opacity: 0.7;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 320px);
-      justify-content: center;
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
     }
 
     .card {
-      background: white;
-      color: #333;
-      border-radius: 15px;
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
       padding: 20px;
       text-align: left;
-      box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
-      transition: 0.3s;
       position: relative;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      transition: 0.3s;
     }
 
     .card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 0 30px rgba(0,255,200,0.4);
     }
 
     .icon {
-      font-size: 30px;
+      font-size: 40px;
     }
 
     .title {
-      font-size: 26px;
+      font-size: 20px;
       font-weight: bold;
-      margin: 10px 0;
+      margin-top: 10px;
     }
 
     .desc {
       font-size: 14px;
-      color: #555;
-      margin-bottom: 15px;
+      opacity: 0.8;
+      margin: 10px 0 15px;
     }
 
     .btn {
-      padding: 8px 15px;
+      padding: 10px;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 10px;
       font-weight: bold;
+      cursor: pointer;
+      width: 100%;
     }
 
-    .btn-activo {
-      background: #28a745;
+    .activo {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
       color: white;
     }
 
-    .btn-activo:hover {
-      background: #218838;
+    .activo:hover {
+      background: linear-gradient(45deg, #00eaff, #005eff);
+    }
+
+    .cerrado-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 22px;
+      font-weight: bold;
+      letter-spacing: 2px;
     }
 
     .cerrado {
       filter: grayscale(100%);
-      opacity: 0.7;
     }
 
-    .badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: red;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 10px;
+    footer {
+      margin: 20px;
       font-size: 12px;
-    }
-
-    @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      opacity: 0.5;
     }
   </style>
 </head>
@@ -108,25 +129,31 @@
 <body>
 
 <div class="header">
-  <img src="LOGO_PARADISE.png">
+  <div class="logo-box">
+    <img src="LOGO_PARADISE.png">
+  </div>
+
   <h1>PROYECTOS ACADÉMICOS</h1>
+  <div class="sub">Explora, participa y crea tu futuro</div>
 </div>
 
 <div class="grid" id="contenedor"></div>
 
+<footer>
+  Paradise International School © 2026
+</footer>
+
 <script>
 let iconos = {
   "EUREKA": "🔬",
-  "JUNIOR RESEARCH": "📘",
+  "JUNIOR RESEARCH": "📚",
   "CANGURO MATEMÁTICO": "🧮",
   "PRE-U": "🎓"
 };
 
 fetch("config.json")
   .then(res => res.json())
-  .then(data => {
-    mostrar(data);
-  });
+  .then(data => mostrar(data));
 
 function mostrar(lista) {
   let html = "";
@@ -139,19 +166,19 @@ function mostrar(lista) {
     html += `
       <div class="card ${activo ? "" : "cerrado"}">
 
-        ${!activo ? `<div class="badge">CERRADO</div>` : ""}
-
         <div class="icon">${icono}</div>
 
         <div class="title">${p.nombre}</div>
 
-        <div class="desc">${p.descripcion || ""}</div>
+        <div class="desc">${p.descripcion}</div>
 
         ${
           activo
-            ? `<button class="btn btn-activo" onclick="window.open('${p.url}','_blank')">Ingresar</button>`
-            : `<button class="btn" disabled>Disponible pronto</button>`
+            ? `<button class="btn activo" onclick="window.open('${p.url}','_blank')">INGRESAR</button>`
+            : `<button class="btn" disabled>NO DISPONIBLE</button>`
         }
+
+        ${!activo ? `<div class="cerrado-overlay">CERRADO</div>` : ""}
 
       </div>
     `;
