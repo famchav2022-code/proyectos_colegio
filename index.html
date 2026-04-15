@@ -1,140 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Proyectos del Colegio</title>
+  <meta charset="UTF-8">
+  <title>Proyectos Académicos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
     body {
-      font-family: Arial;
-      background: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      margin: 0;
       padding: 20px;
+      color: white;
       text-align: center;
     }
 
+    .header img {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 320px);
+      justify-content: center;
+      gap: 20px;
     }
 
     .card {
       background: white;
-      padding: 15px;
-      margin: 10px;
-      border-radius: 10px;
-      box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+      color: #333;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: left;
+      box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .icon {
+      font-size: 30px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .desc {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
     }
 
     .btn {
       padding: 8px 15px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: bold;
     }
 
-    .btn-ir {
-      background: #007bff;
+    .btn-activo {
+      background: #28a745;
       color: white;
     }
 
-    .btn-config {
-      background: #333;
-      color: white;
-      margin-bottom: 20px;
+    .btn-activo:hover {
+      background: #218838;
     }
 
-    input {
-      width: 80%;
-      margin: 5px;
-      padding: 5px;
+    .cerrado {
+      filter: grayscale(100%);
+      opacity: 0.7;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: red;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<h1>PROYECTOS DEL COLEGIO</h1>
+<div class="header">
+  <img src="LOGO_PARADISE.png">
+  <h1>PROYECTOS ACADÉMICOS</h1>
+</div>
 
-<button class="btn btn-config" onclick="modoAdmin()">Configurar</button>
-
-<div id="contenedor"></div>
+<div class="grid" id="contenedor"></div>
 
 <script>
-let proyectos = [];
-let admin = false;
+let iconos = {
+  "EUREKA": "🔬",
+  "JUNIOR RESEARCH": "📘",
+  "CANGURO MATEMÁTICO": "🧮",
+  "PRE-U": "🎓"
+};
 
-// Cargar JSON
 fetch("config.json")
   .then(res => res.json())
   .then(data => {
-    proyectos = data;
-    mostrar();
+    mostrar(data);
   });
 
-// Mostrar proyectos
-function mostrar() {
+function mostrar(lista) {
   let html = "";
 
-  proyectos.forEach((p, i) => {
+  lista.forEach(p => {
 
-    if (p.activo || admin) {
+    let activo = p.activo;
+    let icono = iconos[p.nombre] || "📌";
 
-      html += `<div class="card">
-        <h3>${p.nombre}</h3>
-      `;
+    html += `
+      <div class="card ${activo ? "" : "cerrado"}">
 
-      if (p.activo) {
-        html += `<button class="btn btn-ir" onclick="ir('${p.url}')">Abrir</button>`;
-      } else {
-        html += `<p style="color:red;">Inactivo</p>`;
-      }
+        ${!activo ? `<div class="badge">CERRADO</div>` : ""}
 
-      // modo admin
-      if (admin) {
-        html += `
-          <br><br>
-          <input placeholder="URL" value="${p.url}" onchange="cambiarURL(${i}, this.value)">
-          <br>
-          <label>
-            <input type="checkbox" ${p.activo ? "checked" : ""} onchange="toggle(${i})">
-            Activo
-          </label>
-        `;
-      }
+        <div class="icon">${icono}</div>
 
-      html += `</div>`;
-    }
+        <div class="title">${p.nombre}</div>
 
+        <div class="desc">${p.descripcion || ""}</div>
+
+        ${
+          activo
+            ? `<button class="btn btn-activo" onclick="window.open('${p.url}','_blank')">Ingresar</button>`
+            : `<button class="btn" disabled>Disponible pronto</button>`
+        }
+
+      </div>
+    `;
   });
 
   document.getElementById("contenedor").innerHTML = html;
-}
-
-// Ir a proyecto
-function ir(url) {
-  window.open(url, "_blank");
-}
-
-// Activar admin
-function modoAdmin() {
-  let clave = prompt("Ingrese clave:");
-
-  if (clave === "1234") {
-    admin = true;
-    mostrar();
-    alert("Modo configuración activado.\nRecuerda actualizar manualmente config.json");
-  } else {
-    alert("Clave incorrecta");
-  }
-}
-
-// Cambiar URL (solo visual)
-function cambiarURL(i, valor) {
-  proyectos[i].url = valor;
-}
-
-// Activar/desactivar
-function toggle(i) {
-  proyectos[i].activo = !proyectos[i].activo;
 }
 </script>
 
