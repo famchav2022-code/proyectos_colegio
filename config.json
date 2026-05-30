@@ -18,9 +18,9 @@
     "activo": false
   },
   {
-    "nombre": "PFERIA DE CIENCIAS PRIMARIA",
+    "nombre": "FERIA DE CIENCIAS PRIMARIA",
     "descripcion": "Recursos para elaboración de proyectos en Primaria",
     "url": "https://script.google.com/macros/s/AKfycbx6nUPQY8pxDz_1RruwXgj7_AfRuzj7GAW-hZW6wHsM7SVMUlGiEiC3pEyCASj045YH/exec?v=notas",
-    "activo": false
+    "activo": true
   }
 ]
