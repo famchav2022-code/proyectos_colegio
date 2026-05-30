@@ -3,7 +3,7 @@
     "nombre": "EUREKA",
     "descripcion": "Feria de Ciencias 2026",
     "url": "https://paradise.sieweb.com.pe/sistema/intranet/",
-    "activo": false
+    "activo": true
   },
   {
     "nombre": "JUNIOR RESEARCH",
