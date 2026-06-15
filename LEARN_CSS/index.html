@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Mastery - Aprende CSS Jugando</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">🎨</span>
+            <span class="logo-text">CSS Mastery</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Inicio</a></li>
+            <li><a href="pages/cajas.html">Cajas</a></li>
+            <li><a href="pages/fuentes.html">Fuentes</a></li>
+            <li><a href="pages/listas.html">Listas</a></li>
+            <li><a href="pages/tablas.html">Tablas</a></li>
+            <li><a href="pages/vinculos.html">Vínculos</a></li>
+            <li><a href="pages/tarjetas.html">Tarjetas</a></li>
+            <li><a href="pages/imagenes.html">Imágenes</a></li>
+            <li><a href="pages/botones.html">Botones</a></li>
+            <li><a href="pages/quiz.html" style="color: var(--accent); font-weight: bold;">📝 Evaluación Final</a></li>
+        </ul>
+        <div class="progress-bar">
+            <span>Progreso: <strong id="progress-text">0%</strong></span>
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1>🚀 Domina CSS Jugando</h1>
+            <p>Aprende diseño web practicando con desafíos interactivos. 
+               Modifica código, ve los resultados en tiempo real y conviértete en un experto.</p>
+            <a href="pages/cajas.html" class="btn-primary">Comenzar Aventura</a>
+        </div>
+        <div class="hero-visual">
+            <div class="code-preview">
+                <div class="preview-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+                <pre><code><span class="token-selector">.caja</span> {
+  <span class="token-prop">background</span>: <span class="token-value">#667eea</span>;
+  <span class="token-prop">padding</span>: <span class="token-value">20px</span>;
+  <span class="token-prop">border-radius</span>: <span class="token-value">10px</span>;
+  <span class="token-prop">box-shadow</span>: <span class="token-value">0 4px 15px rgba(0,0,0,0.2)</span>;
+}</code></pre>
+            </div>
+        </div>
+    </header>
+
+    <!-- Grid de Módulos -->
+    <main class="modules-grid">
+        <h2>📚 Módulos de Aprendizaje</h2>
+        <p class="subtitle">Selecciona un módulo para comenzar los desafíos</p>
+        
+        <div class="cards-container">
+            <!-- Módulo 1: Cajas -->
+            <a href="pages/cajas.html" class="module-card">
+                <div class="card-icon">📦</div>
+                <h3>Estilos para Cajas</h3>
+                <p>Maquetado, display, flexbox, padding, margin, bordes y sombras.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Fácil</span>
+                </div>
+            </a>
+
+            <!-- Módulo 2: Fuentes -->
+            <a href="pages/fuentes.html" class="module-card">
+                <div class="card-icon">🔤</div>
+                <h3>Fuentes y Párrafos</h3>
+                <p>Tipografía, Google Fonts, alineación, interlineado y decoración.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Fácil</span>
+                </div>
+            </a>
+
+            <!-- Módulo 3: Listas -->
+            <a href="pages/listas.html" class="module-card">
+                <div class="card-icon">📋</div>
+                <h3>Estilos para Listas</h3>
+                <p>Listas ordenadas, desordenadas, personalización de viñetas y numeración.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Fácil</span>
+                </div>
+            </a>
+
+            <!-- Módulo 4: Tablas -->
+            <a href="pages/tablas.html" class="module-card">
+                <div class="card-icon">📊</div>
+                <h3>Estilos para Tablas</h3>
+                <p>Bordes, colores alternos, hover effects, encabezados y responsive.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty medium">Medio</span>
+                </div>
+            </a>
+
+            <!-- Módulo 5: Vínculos -->
+            <a href="pages/vinculos.html" class="module-card">
+                <div class="card-icon">🔗</div>
+                <h3>Estilos para Vínculos</h3>
+                <p>Pseudo-clases :hover, :active, :visited, transiciones y efectos.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Fácil</span>
+                </div>
+            </a>
+
+            <!-- Módulo 6: Tarjetas -->
+            <a href="pages/tarjetas.html" class="module-card">
+                <div class="card-icon">🃏</div>
+                <h3>Estilos para Tarjetas</h3>
+                <p>Diseño de tarjetas, sombras, imágenes, overlays y layouts.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty medium">Medio</span>
+                </div>
+            </a>
+
+            <!-- Módulo 7: Imágenes -->
+            <a href="pages/imagenes.html" class="module-card">
+                <div class="card-icon">🖼️</div>
+                <h3>Estilos para Imágenes</h3>
+                <p>Filtros, object-fit, bordes redondeados, galerías y efectos.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty medium">Medio</span>
+                </div>
+            </a>
+
+            <!-- Módulo 8: Botones -->
+            <a href="pages/botones.html" class="module-card">
+                <div class="card-icon">🔘</div>
+                <h3>Estilos para Botones</h3>
+                <p>Botones modernos, gradientes, animaciones, iconos y estados.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty medium">Medio</span>
+                </div>
+            </a>
+            <a href="pages/fondos.html" class="module-card">
+                <div class="card-icon">🖼️</div>
+                <h3>Efectos de Fondo</h3>
+                <p>Aprende a integrar imágenes, ajustar escalas, centrar portadas y aplicar transparencias con RGBA.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Inicial</span>
+                </div>
+            </a>
+            <a href="pages/sombras.html" class="module-card">
+                <div class="card-icon">🌓</div>
+                <h3>Sombras de Caja y Texto</h3>
+                <p>Domina los efectos volumétricos con box-shadow, text-shadow y los relieves internos.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Inicial</span>
+                </div>
+            </a>
+
+            <a href="pages/flexbox.html" class="module-card">
+                <div class="card-icon">⚡</div>
+                <h3>Flexbox Inicial</h3>
+                <p>Aprende las propiedades clave para alinear, centrar y distribuir cajas de manera elástica.</p>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="difficulty easy">Inicial</span>
+                </div>
+            </a>
+            <a href="pages/quiz.html" class="module-card" style="border: 2px dashed var(--accent); background: linear-gradient(135deg, var(--bg-card), var(--bg-light));">
+    <div class="card-icon">📝</div>
+    <h3 style="color: var(--accent);">Examen de Certificación</h3>
+    <p>Demuestra tus conocimientos teóricos y prácticos en el cuestionario final de la plataforma.</p>
+    <div class="card-meta">
+        <span class="badge" style="background: var(--secondary); color: white;">20 Preguntas</span>
+        <span class="difficulty easy">Inicial</span>
+    </div>
+</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>🎓 CSS Mastery - Curso de Computing 5to de Secundaria</p>
+        <p>Aprende haciendo, crea sin límites</p>
+    </footer>
+
+    <script>
+        // Calcular progreso desde localStorage
+        function updateProgress() {
+            const modules = ['cajas', 'fuentes', 'listas', 'tablas', 'vinculos', 'tarjetas', 'imagenes', 'botones', 'fondos', 'sombras', 'flexbox'];
+            let totalCompleted = 0;
+            let totalChallenges = 0;
+            
+            modules.forEach(mod => {
+                const completed = JSON.parse(localStorage.getItem(`progress_${mod}`) || '[]');
+                totalCompleted += completed.length;
+                totalChallenges += 5;
+            });
+            
+            const percentage = Math.round((totalCompleted / totalChallenges) * 100);
+            document.getElementById('progress-text').textContent = percentage + '%';
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+        updateProgress();
+    </script>
+</body>
+</html>
