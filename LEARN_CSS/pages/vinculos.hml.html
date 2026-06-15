@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vínculos - CSS Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00b4db;
+            --primary-dark: #0083b0;
+            --secondary: #111;
+            --accent: #f093fb;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-light: #0f3460;
+            --text-light: #f1f1f1;
+            --text-muted: #a0aec0;
+            --editor-bg: #1e1e1e;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .challenge-page {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .challenge-header {
+            background: var(--bg-card);
+            padding: 0.75rem 2rem;
+            border-bottom: 2px solid var(--primary);
+            flex-shrink: 0;
+        }
+
+        .challenge-header .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .challenge-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .challenge-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .challenge-nav {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .challenge-btn {
+            padding: 0.4rem 1rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .challenge-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .challenge-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .challenge-btn.completed {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .challenge-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 1fr;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .info-panel {
+            background: var(--bg-card);
+            border-right: 1px solid var(--bg-light);
+            padding: 1.25rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-panel h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .info-panel .description {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .info-panel .description code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #00b4db;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .concepts-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--warning);
+        }
+
+        .concepts-box h3 {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .concepts-box ul { list-style: none; padding: 0; margin: 0; }
+
+        .concepts-box li {
+            padding: 0.35rem 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .concepts-box li code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #9cdcfe;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .help-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+            margin-top: auto;
+        }
+
+        .help-box h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .help-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .editor-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--editor-bg);
+            border-right: 1px solid #333;
+            min-height: 0;
+        }
+
+        .editor-tabs {
+            display: flex;
+            background: #252526;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .editor-tab {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .editor-tab.active {
+            color: var(--text-light);
+            border-bottom-color: var(--primary);
+            background: var(--editor-bg);
+        }
+
+        .code-editor {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            background: #1e1e1e;
+            color: #858585;
+            padding: 0.75rem 0.6rem;
+            text-align: right;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            user-select: none;
+            border-right: 1px solid #333;
+            min-width: 42px;
+        }
+
+        .editor-textarea {
+            flex: 1;
+            background: var(--editor-bg);
+            color: #d4d4d4;
+            border: none;
+            padding: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+            tab-size: 4;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--bg-light);
+            flex-shrink: 0;
+        }
+
+        .btn-check {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-hint {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--warning), #dd6b20);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-hint:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-reset {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--text-muted);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+            min-height: 0;
+        }
+
+        .output-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid var(--bg-light);
+            min-height: 0;
+        }
+
+        .output-section:last-child { border-bottom: none; }
+
+        .output-header {
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-light);
+            flex-shrink: 0;
+        }
+
+        .output-header h3 {
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .output-header .status {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: rgba(237, 137, 54, 0.2);
+            color: var(--warning);
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+        }
+
+        .output-frame {
+            flex: 1;
+            background: #ffffff;
+            overflow: auto;
+            position: relative;
+            min-height: 0;
+        }
+
+        .output-content {
+            padding: 2rem;
+            min-height: 100%;
+            color: #2d3748;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .output-content a {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            text-decoration: underline;
+            color: #0000ee;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .success-message.show { display: flex; }
+
+        @media (max-width: 900px) {
+            .challenge-layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 280px 1fr;
+                overflow-y: auto;
+            }
+            .info-panel { max-height: 350px; }
+        }
+    </style>
+</head>
+<body class="challenge-page">
+
+    <div class="success-message" id="success-msg">
+        <span>🔗</span>
+        <span>¡Genial! Estado e interactividad del vínculo configurados perfectamente.</span>
+    </div>
+
+    <header class="challenge-header">
+        <a href="../index.html" class="back-link">← Volver al inicio</a>
+        <h1>🔗 Estilos para Vínculos</h1>
+        <p>Domina los estados interactivos del hipertexto utilizando las pseudo-clases dinámicas de CSS.</p>
+        
+        <nav class="challenge-nav" id="challenge-nav">
+            <button class="challenge-btn active" onclick="loadChallenge(0)">Desafío 1</button>
+            <button class="challenge-btn" onclick="loadChallenge(1)">Desafío 2</button>
+            <button class="challenge-btn" onclick="loadChallenge(2)">Desafío 3</button>
+            <button class="challenge-btn" onclick="loadChallenge(3)">Desafío 4</button>
+            <button class="challenge-btn" onclick="loadChallenge(4)">Desafío 5</button>
+        </nav>
+    </header>
+
+    <div class="challenge-layout">
+        <aside class="info-panel">
+            <div id="challenge-info">
+                <h2 id="challenge-title">Cargando...</h2>
+                <p class="description" id="challenge-desc">Cargando descripción...</p>
+                
+                <div class="concepts-box">
+                    <h3>🎯 Conceptos y Propiedades</h3>
+                    <ul id="challenge-concepts">
+                        <li>Cargando...</li>
+                    </ul>
+                </div>
+                
+                <div class="help-box" id="help-box">
+                    <h3>💡 Ayuda / Pista</h3>
+                    <div id="challenge-help">
+                        <p>Cargando ayuda...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="editor-panel">
+            <div class="editor-tabs">
+                <button class="editor-tab active">styles.css</button>
+            </div>
+            <div class="code-editor">
+                <div class="line-numbers" id="line-numbers">
+                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10
+                </div>
+                <textarea class="editor-textarea" id="css-editor" placeholder="/* Escribe tu CSS aquí */" spellcheck="false"></textarea>
+            </div>
+            <div class="action-bar">
+                <button class="btn-check" onclick="checkSolution()">✅ Verificar Solución</button>
+                <button class="btn-hint" onclick="toggleHint()">💡 Ver Pista</button>
+                <button class="btn-reset" onclick="resetChallenge()">🔄 Reiniciar</button>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>🎯 Salida Esperada</h3>
+                    <span class="status pending">Objetivo</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="expected-output"></div>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>👁️ Salida Actual (Interactúa pasando el mouse)</h3>
+                    <span class="status pending" id="current-status">En progreso</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="actual-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const challenges = [
+            {
+                title: "Desafío 1: Quitar Subrayado por Defecto",
+                description: "Por defecto, los navegadores añaden una línea debajo de los enlaces. Modifica la clase <code>.enlace-limpio</code> para eliminar por completo ese subrayado decorativo y cambia su color a un tono cian (#00b4db).",
+                concepts: [
+                    "<code>text-decoration</code> - Controla líneas decorativas en el texto.",
+                    "<code>color</code> - Modifica el color del texto."
+                ],
+                help: "<p>Para remover decoraciones visuales de fuentes como líneas superiores o inferiores, se anula la propiedad con un valor específico de ausencia. ¿Cuál es la palabra en inglés para expresar 'nada'?</p>",
+                html: '<a href="#" class="enlace-limpio">Enlace Minimalista</a>',
+                expectedCSS: '.enlace-limpio { text-decoration: none; color: #00b4db; font-family: sans-serif; font-weight: bold; }',
+                starterCSS: "/* 🎯 Remueve la línea inferior por defecto y cambia el color */\n.enlace-limpio {\n    \n}"
+            },
+            {
+                title: "Desafío 2: Cambio de Color al pasar el Mouse (:hover)",
+                description: "Queremos avisar al usuario que el elemento es interactivo. Haz que el vínculo de la clase <code>.enlace-interactivo</code> cambie su color a naranja vibrante (#ed8936) **únicamente** cuando el cursor se posicione sobre él.",
+                concepts: [
+                    "<code>:hover</code> - Pseudo-clase que responde a la presencia del puntero."
+                ],
+                help: "<p>La sintaxis requiere aplicar la pseudo-clase directamente unida al selector: <code>.enlace-interactivo:hover</code>. Dentro de las llaves, define el nuevo color solicitado.</p>",
+                html: '<a href="#" class="enlace-interactivo">Pasa el cursor aquí</a>',
+                expectedCSS: '.enlace-interactivo { color: #0083b0; font-family: sans-serif; text-decoration: none; font-weight: bold; } .enlace-interactivo:hover { color: #ed8936; }',
+                starterCSS: "/* 🎯 Define el comportamiento reactivo al pasar el mouse */\n.enlace-interactivo:hover {\n    \n}"
+            },
+            {
+                title: "Desafío 3: El Estado de Clic Activo (:active)",
+                description: "Modifica el enlace de la clase <code>.enlace-presionado</code> para que, justo en el microsegundo en que el usuario mantenga pulsado el botón izquierdo del mouse sobre él, el texto se reduzca ligeramente de tamaño a 14px utilizando la pseudo-clase adecuada.",
+                concepts: [
+                    "<code>:active</code> - Detecta la acción física de pulsación o clic en proceso.",
+                    "<code>font-size</code> - Controla la escala de la tipografía."
+                ],
+                help: "<p>Pista: Al igual que combinaste `:hover`, ahora debes usar el estado de activación física (<code>:active</code>). Acopla este estado a la clase e inyecta la propiedad de tamaño tipográfico.</p>",
+                html: '<a href="#" class="enlace-presionado">Mantén presionado el clic</a>',
+                expectedCSS: '.enlace-presionado { color: #111; font-family: sans-serif; text-decoration: none; font-weight: bold; font-size: 18px; } .enlace-presionado:active { font-size: 14px; }',
+                starterCSS: "/* 🎯 Modifica la escala visual en pleno clic */\n.enlace-presionado:active {\n    \n}"
+            },
+            {
+                title: "Desafío 4: El Cambio Suave con Transiciones (Efecto Avanzado)",
+                description: "Los cambios bruscos de color restan elegancia. Aplica una transición suave a la clase <code>.enlace-suave</code> para que el cambio de color de fondo hacia negro (#111) y texto a blanco dure exactamente 0.4 segundos de forma fluida.",
+                concepts: [
+                    "<code>transition</code> - Suaviza los cambios de estados CSS en el tiempo.",
+                    "<code>background-color</code> - Modifica el fondo del enlace."
+                ],
+                help: "<p>¡Reto avanzado! Debes escribir dos reglas: la primera añade <code>transition: all 0.4s;</code> a la clase base <code>.enlace-suave</code>. La segunda regla define el <code>background-color</code> y el <code>color</code> dentro del estado <code>:hover</code>.</p>",
+                html: '<a href="#" class="enlace-suave">Transición Fluida</a>',
+                expectedCSS: '.enlace-suave { color: #111; font-family: sans-serif; text-decoration: none; padding: 8px 16px; border: 2px solid #111; transition: all 0.4s; font-weight: bold; } .enlace-suave:hover { background-color: #111; color: white; }',
+                starterCSS: "/* 🎯 Configura la base con transición y el estado de hover */\n.enlace-suave {\n    transition: all 0.4s;\n}\n\n.enlace-suave:hover {\n    \n}"
+            },
+            {
+                title: "Desafío 5: Subrayado Mágico con Bordes Animados (Efecto Avanzado)",
+                description: "Diseña un efecto moderno de interfaz. El enlace <code>.enlace-magico</code> no debe tener subrayado tradicional, pero al pasar el mouse (<code>:hover</code>), debe aparecer instantáneamente una línea inferior gruesa de 3px color magenta (#f56565).",
+                concepts: [
+                    "<code>border-bottom</code> - Usado estratégicamente como alternativa moderna al subrayado nativo.",
+                    "Anulación de decoraciones nativas."
+                ],
+                help: "<p>Pista socrática para maquetación: Primero asegúrate de que no haya un subrayado clásico nativo en la base. Luego, en el estado hover, invoca una propiedad que dibuje un borde únicamente en el contorno de abajo.</p>",
+                html: '<a href="#" class="enlace-magico">Efecto Línea Mágica</a>',
+                expectedCSS: '.enlace-magico { text-decoration: none; color: #2d3748; font-family: sans-serif; font-weight: bold; padding-bottom: 4px; } .enlace-magico:hover { border-bottom: 3px solid #f56565; }',
+                starterCSS: "/* 🎯 Crea la aparición dinámica del borde inferior */\n.enlace-magico {\n    text-decoration: none;\n}\n\n.enlace-magico:hover {\n    \n}"
+            }
+        ];
+
+        let currentChallenge = 0;
+        const editor = document.getElementById('css-editor');
+        const expectedOutput = document.getElementById('expected-output');
+        const actualOutput = document.getElementById('actual-output');
+        const currentStatus = document.getElementById('current-status');
+        const successMsg = document.getElementById('success-msg');
+
+        function loadChallenge(index) {
+            currentChallenge = index;
+            const challenge = challenges[index];
+            
+            document.querySelectorAll('.challenge-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            
+            document.getElementById('challenge-title').innerHTML = challenge.title;
+            document.getElementById('challenge-desc').innerHTML = challenge.description;
+            
+            const conceptsList = document.getElementById('challenge-concepts');
+            conceptsList.innerHTML = challenge.concepts.map(c => `<li>${c}</li>`).join('');
+            
+            document.getElementById('challenge-help').innerHTML = challenge.help;
+            
+            try {
+                const saved = localStorage.getItem(`vinculos_challenge_${index}`);
+                editor.value = saved || challenge.starterCSS;
+            } catch(e) {
+                editor.value = challenge.starterCSS;
+            }
+            
+            const scopedExpectedCSS = scopeCSS(challenge.expectedCSS, '#expected-output');
+            expectedOutput.innerHTML = `<style>${scopedExpectedCSS}</style>${challenge.html}`;
+            
+            updateActual();
+            updateLineNumbers();
+        }
+
+        function updateActual() {
+            const challenge = challenges[currentChallenge];
+            const userCSS = editor.value;
+            
+            const scopedUserCSS = scopeCSS(userCSS, '#actual-output');
+            actualOutput.innerHTML = `<style>${scopedUserCSS}</style>${challenge.html}`;
+            
+            try {
+                localStorage.setItem(`vinculos_challenge_${currentChallenge}`, userCSS);
+            } catch(e) {}
+            
+            checkSimilarity(userCSS);
+        }
+
+        function scopeCSS(cssText, selectorPadre) {
+            if (!cssText) return '';
+            let cleanCSS = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
+            return cleanCSS.replace(/([^\s{][^{]*)\{([^}]*)\}/g, (match, selector, propiedades) => {
+                const selectoresIndividuales = selector.split(',');
+                const selectoresConScope = selectoresIndividuales.map(sel => {
+                    let s = sel.trim();
+                    if (s.length === 0) return '';
+                    if (s.startsWith(selectorPadre)) return s;
+                    return `${selectorPadre} ${s}`;
+                });
+                return `${selectoresConScope.join(', ')} { ${propiedades} }`;
+            });
+        }
+
+        function checkSimilarity(userCSS) {
+            let hasRequired = false;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            
+            switch(currentChallenge) {
+                case 0: hasRequired = cleanUser.includes('text-decoration:none'); break;
+                case 1: hasRequired = cleanUser.includes(':hover') && cleanUser.includes('color:'); break;
+                case 2: hasRequired = cleanUser.includes(':active') && cleanUser.includes('font-size:'); break;
+                case 3: hasRequired = cleanUser.includes(':hover') && cleanUser.includes('background-color:'); break;
+                case 4: hasRequired = cleanUser.includes(':hover') && cleanUser.includes('border-bottom:'); break;
+            }
+            
+            if (hasRequired && cleanUser.length > 10) {
+                currentStatus.textContent = '¡Muy bien! 🎉';
+                currentStatus.className = 'status success';
+            } else {
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function checkSolution() {
+            const userCSS = editor.value;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/["']/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            let isCorrect = false;
+
+            switch(currentChallenge) {
+                case 0: isCorrect = cleanUser.includes('text-decoration:none') && cleanUser.includes('color:#00b4db'); break;
+                case 1: isCorrect = cleanUser.includes('.enlace-interactivo:hover') && cleanUser.includes('color:#ed8936'); break;
+                case 2: isCorrect = cleanUser.includes('.enlace-presionado:active') && cleanUser.includes('font-size:14px'); break;
+                case 3: isCorrect = cleanUser.includes('.enlace-suave:hover') && cleanUser.includes('background-color:#111') && cleanUser.includes('color:white'); break;
+                case 4: isCorrect = cleanUser.includes('.enlace-magico:hover') && cleanUser.includes('border-bottom:3pxsolid#f56565'); break;
+            }
+
+            if (isCorrect) {
+                try {
+                    let completed = JSON.parse(localStorage.getItem('progress_vinculos') || '[]');
+                    if (!completed.includes(currentChallenge)) {
+                        completed.push(currentChallenge);
+                        localStorage.setItem('progress_vinculos', JSON.stringify(completed));
+                    }
+                } catch(e) {}
+                
+                const btn = document.querySelectorAll('.challenge-btn')[currentChallenge];
+                if (btn) btn.classList.add('completed');
+                
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+                
+                currentStatus.textContent = '¡Completado! ✅';
+                currentStatus.className = 'status success';
+            } else {
+                alert('La solución propuesta presenta discrepancias con las reglas solicitadas del estado web. Comprueba la sintaxis de las pseudo-clases colocándoles correctamente los dos puntos (:).');
+            }
+        }
+
+        function toggleHint() {
+            const helpBox = document.getElementById('help-box');
+            helpBox.style.display = helpBox.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function resetChallenge() {
+            if (confirm('¿Seguro que deseas reiniciar este desafío? Tu código actual para esta sección se borrará.')) {
+                editor.value = challenges[currentChallenge].starterCSS;
+                updateActual();
+                updateLineNumbers();
+                try { localStorage.removeItem(`vinculos_challenge_${currentChallenge}`); } catch(e) {}
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            const numbers = Array.from({length: Math.max(lines, 12)}, (_, i) => i + 1).join('<br>');
+            document.getElementById('line-numbers').innerHTML = numbers;
+        }
+
+        let timeout;
+        editor.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateActual, 250);
+            updateLineNumbers();
+        });
+
+        editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+                updateActual();
+                updateLineNumbers();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChallenge(0);
+            try {
+                const completed = JSON.parse(localStorage.getItem('progress_vinculos') || '[]');
+                completed.forEach(idx => {
+                    const btn = document.querySelectorAll('.challenge-btn')[idx];
+                    if (btn) btn.classList.add('completed');
+                });
+            } catch(e) {}
+        });
+    </script>
+</body>
+</html>

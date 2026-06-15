@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjetas - CSS Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f093fb;
+            --primary-dark: #cc7ae3;
+            --secondary: #16213e;
+            --accent: #667eea;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-light: #0f3460;
+            --text-light: #f1f1f1;
+            --text-muted: #a0aec0;
+            --editor-bg: #1e1e1e;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .challenge-page {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .challenge-header {
+            background: var(--bg-card);
+            padding: 0.75rem 2rem;
+            border-bottom: 2px solid var(--primary);
+            flex-shrink: 0;
+        }
+
+        .challenge-header .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .challenge-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .challenge-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .challenge-nav {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .challenge-btn {
+            padding: 0.4rem 1rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .challenge-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .challenge-btn.active {
+            background: var(--primary);
+            color: var(--bg-dark);
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .challenge-btn.completed {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .challenge-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 1fr;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .info-panel {
+            background: var(--bg-card);
+            border-right: 1px solid var(--bg-light);
+            padding: 1.25rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-panel h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .info-panel .description {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .info-panel .description code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: var(--primary);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .concepts-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--warning);
+        }
+
+        .concepts-box h3 {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .concepts-box ul { list-style: none; padding: 0; margin: 0; }
+
+        .concepts-box li {
+            padding: 0.35rem 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .concepts-box li code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #9cdcfe;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .help-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+            margin-top: auto;
+        }
+
+        .help-box h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .help-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .editor-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--editor-bg);
+            border-right: 1px solid #333;
+            min-height: 0;
+        }
+
+        .editor-tabs {
+            display: flex;
+            background: #252526;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .editor-tab {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .editor-tab.active {
+            color: var(--text-light);
+            border-bottom-color: var(--primary);
+            background: var(--editor-bg);
+        }
+
+        .code-editor {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            background: #1e1e1e;
+            color: #858585;
+            padding: 0.75rem 0.6rem;
+            text-align: right;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            user-select: none;
+            border-right: 1px solid #333;
+            min-width: 42px;
+        }
+
+        .editor-textarea {
+            flex: 1;
+            background: var(--editor-bg);
+            color: #d4d4d4;
+            border: none;
+            padding: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+            tab-size: 4;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--bg-light);
+            flex-shrink: 0;
+        }
+
+        .btn-check {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-hint {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--warning), #dd6b20);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-hint:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-reset {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--text-muted);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+            background: #f0f4f8;
+            min-height: 0;
+        }
+
+        .output-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid #cbd5e0;
+            min-height: 0;
+        }
+
+        .output-section:last-child { border-bottom: none; }
+
+        .output-header {
+            background: #e2e8f0;
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #cbd5e0;
+            flex-shrink: 0;
+        }
+
+        .output-header h3 {
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .output-header .status {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: rgba(237, 137, 54, 0.2);
+            color: var(--warning);
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+        }
+
+        .output-frame {
+            flex: 1;
+            background: #f7fafc;
+            overflow: auto;
+            position: relative;
+            min-height: 0;
+        }
+
+        .output-content {
+            padding: 2rem;
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .success-message.show { display: flex; }
+
+        @media (max-width: 900px) {
+            .challenge-layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 280px 1fr;
+                overflow-y: auto;
+            }
+            .info-panel { max-height: 350px; }
+        }
+    </style>
+</head>
+<body class="challenge-page">
+
+    <div class="success-message" id="success-msg">
+        <span>🎴</span>
+        <span>¡Espectacular! La estructura y efectos de la tarjeta lucen perfectos.</span>
+    </div>
+
+    <header class="challenge-header">
+        <a href="../index.html" class="back-link">← Volver al inicio</a>
+        <h1>🎴 Estilos para Tarjetas (Cards)</h1>
+        <p>Construye componentes encapsulados estilizando contenedores con esquinas redondeadas, sombras y animaciones elevadas.</p>
+        
+        <nav class="challenge-nav" id="challenge-nav">
+            <button class="challenge-btn active" onclick="loadChallenge(0)">Desafío 1</button>
+            <button class="challenge-btn" onclick="loadChallenge(1)">Desafío 2</button>
+            <button class="challenge-btn" onclick="loadChallenge(2)">Desafío 3</button>
+            <button class="challenge-btn" onclick="loadChallenge(3)">Desafío 4</button>
+            <button class="challenge-btn" onclick="loadChallenge(4)">Desafío 5</button>
+        </nav>
+    </header>
+
+    <div class="challenge-layout">
+        <aside class="info-panel">
+            <div id="challenge-info">
+                <h2 id="challenge-title">Cargando...</h2>
+                <p class="description" id="challenge-desc">Cargando descripción...</p>
+                
+                <div class="concepts-box">
+                    <h3>🎯 Conceptos y Propiedades</h3>
+                    <ul id="challenge-concepts">
+                        <li>Cargando...</li>
+                    </ul>
+                </div>
+                
+                <div class="help-box" id="help-box">
+                    <h3>💡 Ayuda / Pista</h3>
+                    <div id="challenge-help">
+                        <p>Cargando ayuda...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="editor-panel">
+            <div class="editor-tabs">
+                <button class="editor-tab active">styles.css</button>
+            </div>
+            <div class="code-editor">
+                <div class="line-numbers" id="line-numbers">
+                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10
+                </div>
+                <textarea class="editor-textarea" id="css-editor" placeholder="/* Escribe tu CSS aquí */" spellcheck="false"></textarea>
+            </div>
+            <div class="action-bar">
+                <button class="btn-check" onclick="checkSolution()">✅ Verificar Solución</button>
+                <button class="btn-hint" onclick="toggleHint()">💡 Ver Pista</button>
+                <button class="btn-reset" onclick="resetChallenge()">🔄 Reiniciar</button>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>🎯 Salida Esperada</h3>
+                    <span class="status pending">Objetivo</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="expected-output"></div>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>👁️ Salida Actual</h3>
+                    <span class="status pending" id="current-status">En progreso</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="actual-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const challenges = [
+            {
+                title: "Desafío 1: Estructura Base y Bordes Redondos",
+                description: "Estiliza el contenedor base de la tarjeta (<code>.card-base</code>). Dale un fondo blanco, un ancho fijo de 280px, un padding interno de 20px y aplica esquinas redondeadas con un radio de 12px.",
+                concepts: [
+                    "<code>background-color</code> - Color de fondo del bloque.",
+                    "<code>width</code> - Ancho estático o dinámico.",
+                    "<code>border-radius</code> - Curvatura de las esquinas del contenedor."
+                ],
+                help: "<p>Para estructurar el contenedor, recuerda agrupar todas las propiedades físicas básicas dentro del selector. ¿Cuál es el nombre de la propiedad en CSS que controla la redondez de los bordes externos?</p>",
+                html: '<div class="card-base" style="color:#2d3748; font-family:sans-serif;"><h4 style="margin-bottom:8px;">Proyecto Biología</h4><p style="font-size:14px; color:#718096;">Diseño automatizado de Muros Verdes.</p></div>',
+                expectedCSS: '.card-base { background-color: white; width: 280px; padding: 20px; border-radius: 12px; font-family: sans-serif; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }',
+                starterCSS: "/* 🎯 Configura el fondo, ancho, espacio y esquinas */\n.card-base {\n    \n}"
+            },
+            {
+                title: "Desafío 2: Agregando Sombra de Profundidad",
+                description: "Las tarjetas necesitan separarse del fondo de la pantalla. Modifica la clase <code>.card-sombra</code> para añadir una sombra difusa sutil. Usa: desplazamiento X=0, Y=4px, difuminado=10px, y un color negro semitransparente (<code>rgba(0, 0, 0, 0.1)</code>).",
+                concepts: [
+                    "<code>box-shadow</code> - Proyecta sombras estéticas alrededor del marco de una caja."
+                ],
+                help: "<p>La propiedad <code>box-shadow</code> toma cuatro valores principales en una sola línea: <code>box-shadow: horizontal vertical difuminado color;</code>. Ordena los valores solicitados respetando la sintaxis matemática de píxeles.</p>",
+                html: '<div class="card-sombra" style="background:white; width:280px; padding:20px; border-radius:12px; color:#2d3748; font-family:sans-serif;"><h4>Junior Researchers</h4><p style="font-size:14px; color:#718096;">Revista Digital Bimestral 2026.</p></div>',
+                expectedCSS: '.card-sombra { box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); background: white; width: 280px; padding: 20px; border-radius: 12px; font-family: sans-serif; }',
+                starterCSS: "/* 🎯 Añade la sombra de profundidad con la sintaxis correcta */\n.card-sombra {\n    \n}"
+            },
+            {
+                title: "Desafío 3: El Encapsulado Perfecto (Overflow)",
+                description: "Cuando pones una imagen o un banner de color dentro de una tarjeta con bordes redondos, el contenido hijo sobresale y arruina la esquina. Usa la clase <code>.card-encapsulada</code> y busca la propiedad necesaria para ocultar todo lo que desborde de sus límites.",
+                concepts: [
+                    "<code>overflow: hidden;</code> - Recorta cualquier contenido hijo que intente salirse de la caja padre."
+                ],
+                help: "<p>Si los bordes redondos de la tarjeta no recortan el color del banner superior de la imagen, debes indicarle al contenedor padre que actúe como una frontera absoluta. Busca la propiedad <code>overflow</code> y asígnale el valor de ocultar.</p>",
+                html: '<div class="card-encapsulada" style="background:white; width:280px; border-radius:16px; font-family:sans-serif; color:#2d3748; box-shadow:0 4px 10px rgba(0,0,0,0.1);"><div style="background:#667eea; color:white; padding:15px; font-weight:bold;">Encabezado Banner</div><div style="padding:15px;">Contenido recortado en las esquinas.</div></div>',
+                expectedCSS: '.card-encapsulada { overflow: hidden; background: white; width: 280px; border-radius: 16px; font-family: sans-serif; }',
+                starterCSS: "/* 🎯 Oculta el contenido que sobresale de las esquinas */\n.card-encapsulada {\n    \n}"
+            },
+            {
+                title: "Desafío 4: Efecto de Elevación Flotante (Efecto Avanzado)",
+                description: "Crea una interacción dinámica de interfaz de usuario. Cuando el cursor pase por encima de <code>.card-flotante:hover</code>, la tarjeta debe subir ligeramente usando una transformación (<code>transform: translateY(-8px);</code>) y su sombra debe volverse más intensa y amplia.",
+                concepts: [
+                    "<code>transform: translateY()</code> - Desplaza un objeto verticalmente en el plano cartesiano.",
+                    "<code>transition</code> - Suaviza la animación de levitación."
+                ],
+                help: "<p>¡Reto avanzado! En el bloque de <code>:hover</code>, aplica la propiedad de transformación provista y redefine un <code>box-shadow</code> con mayor difuminado (por ejemplo, 20px) para simular que la tarjeta se aleja físicamente de la mesa.</p>",
+                html: '<div class="card-flotante" style="background:white; width:280px; padding:20px; border-radius:12px; color:#2d3748; font-family:sans-serif; box-shadow:0 4px 10px rgba(0,0,0,0.1); cursor:pointer; transition:all 0.3s;"><h4>Pasa el mouse</h4><p style="font-size:14px; color:#718096;">Efecto de elevación interactiva.</p></div>',
+                expectedCSS: '.card-flotante:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); } .card-flotante { background: white; width: 280px; padding: 20px; border-radius: 12px; font-family: sans-serif; }',
+                starterCSS: "/* 🎯 Aplica elevación y amplía la sombra al pasar el cursor */\n.card-flotante:hover {\n    \n}"
+            },
+            {
+                title: "Desafío 5: Tarjeta con Borde de Acento Izquierdo (Efecto Avanzado)",
+                description: "Diseña un estilo clásico de alertas o tarjetas informativas profesionales. Haz que <code>.card-acento</code> tenga un borde sólido grueso de 6px **únicamente en su lado izquierdo** de color morado (#667eea), manteniendo sus esquinas redondeadas en el resto de la caja.",
+                concepts: [
+                    "<code>border-left</code> - Aplica propiedades de contorno de forma asimétrica.",
+                    "Estilo modular de contenedores."
+                ],
+                help: "<p>Pista: En lugar de usar la propiedad general <code>border</code>, apunta específicamente al contorno lateral izquierdo. Recuerda pasar los tres parámetros obligatorios: grosor, estilo ('solid') y el color especificado.</p>",
+                html: '<div class="card-acento" style="background:white; width:280px; padding:15px 20px; border-radius:8px; color:#2d3748; font-family:sans-serif; box-shadow:0 2px 8px rgba(0,0,0,0.05);"><strong>Nota Técnica</strong><p style="font-size:13px; color:#718096;">Las bases de datos SQLite no requieren servidores activos externos.</p></div>',
+                expectedCSS: '.card-acento { border-left: 6px solid #667eea; background: white; width: 280px; padding: 15px 20px; border-radius: 8px; font-family: sans-serif; }',
+                starterCSS: "/* 🎯 Inyecta el borde grueso asimétrico de acento izquierdo */\n.card-acento {\n    \n}"
+            }
+        ];
+
+        let currentChallenge = 0;
+        const editor = document.getElementById('css-editor');
+        const expectedOutput = document.getElementById('expected-output');
+        const actualOutput = document.getElementById('actual-output');
+        const currentStatus = document.getElementById('current-status');
+        const successMsg = document.getElementById('success-msg');
+
+        function loadChallenge(index) {
+            currentChallenge = index;
+            const challenge = challenges[index];
+            
+            document.querySelectorAll('.challenge-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            
+            document.getElementById('challenge-title').innerHTML = challenge.title;
+            document.getElementById('challenge-desc').innerHTML = challenge.description;
+            
+            const conceptsList = document.getElementById('challenge-concepts');
+            conceptsList.innerHTML = challenge.concepts.map(c => `<li>${c}</li>`).join('');
+            
+            document.getElementById('challenge-help').innerHTML = challenge.help;
+            
+            try {
+                const saved = localStorage.getItem(`tarjetas_challenge_${index}`);
+                editor.value = saved || challenge.starterCSS;
+            } catch(e) {
+                editor.value = challenge.starterCSS;
+            }
+            
+            const scopedExpectedCSS = scopeCSS(challenge.expectedCSS, '#expected-output');
+            expectedOutput.innerHTML = `<style>${scopedExpectedCSS}</style>${challenge.html}`;
+            
+            updateActual();
+            updateLineNumbers();
+        }
+
+        function updateActual() {
+            const challenge = challenges[currentChallenge];
+            const userCSS = editor.value;
+            
+            const scopedUserCSS = scopeCSS(userCSS, '#actual-output');
+            actualOutput.innerHTML = `<style>${scopedUserCSS}</style>${challenge.html}`;
+            
+            try {
+                localStorage.setItem(`tarjetas_challenge_${currentChallenge}`, userCSS);
+            } catch(e) {}
+            
+            checkSimilarity(userCSS);
+        }
+
+        function scopeCSS(cssText, selectorPadre) {
+            if (!cssText) return '';
+            let cleanCSS = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
+            return cleanCSS.replace(/([^\s{][^{]*)\{([^}]*)\}/g, (match, selector, propiedades) => {
+                const selectoresIndividuales = selector.split(',');
+                const selectoresConScope = selectoresIndividuales.map(sel => {
+                    let s = sel.trim();
+                    if (s.length === 0) return '';
+                    if (s.startsWith(selectorPadre)) return s;
+                    return `${selectorPadre} ${s}`;
+                });
+                return `${selectoresConScope.join(', ')} { ${propiedades} }`;
+            });
+        }
+
+        function checkSimilarity(userCSS) {
+            let hasRequired = false;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            
+            switch(currentChallenge) {
+                case 0: hasRequired = cleanUser.includes('border-radius:') && cleanUser.includes('width:280px'); break;
+                case 1: hasRequired = cleanUser.includes('box-shadow:'); break;
+                case 2: hasRequired = cleanUser.includes('overflow:hidden'); break;
+                case 3: hasRequired = cleanUser.includes('transform:translateY') && cleanUser.includes('box-shadow:'); break;
+                case 4: hasRequired = cleanUser.includes('border-left:'); break;
+            }
+            
+            if (hasRequired && cleanUser.length > 15) {
+                currentStatus.textContent = '¡Muy bien! 🎉';
+                currentStatus.className = 'status success';
+            } else {
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function checkSolution() {
+            const userCSS = editor.value;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/["']/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            let isCorrect = false;
+
+            switch(currentChallenge) {
+                case 0: isCorrect = cleanUser.includes('background-color:white') && cleanUser.includes('width:280px') && cleanUser.includes('border-radius:12px') && cleanUser.includes('padding:20px'); break;
+                case 1: isCorrect = cleanUser.includes('box-shadow:0px4px10pxrgba(0,0,0,0.1)') || cleanUser.includes('box-shadow:04px10pxrgba(0,0,0,0.1)'); break;
+                case 2: isCorrect = cleanUser.includes('overflow:hidden'); break;
+                case 3: isCorrect = cleanUser.includes('transform:translateY(-8px)') && cleanUser.includes('box-shadow:'); break;
+                case 4: isCorrect = cleanUser.includes('border-left:6pxsolid#667eea'); break;
+            }
+
+            if (isCorrect) {
+                try {
+                    let completed = JSON.parse(localStorage.getItem('progress_tarjetas') || '[]');
+                    if (!completed.includes(currentChallenge)) {
+                        completed.push(currentChallenge);
+                        localStorage.setItem('progress_tarjetas', JSON.stringify(completed));
+                    }
+                } catch(e) {}
+                
+                const btn = document.querySelectorAll('.challenge-btn')[currentChallenge];
+                if (btn) btn.classList.add('completed');
+                
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+                
+                currentStatus.textContent = '¡Completado! ✅';
+                currentStatus.className = 'status success';
+            } else {
+                alert('La solución estructural o visual de la tarjeta difiere de los requisitos planteados en las instrucciones técnicas. Asegúrate de escribir correctamente las unidades (px) y las comas en los canales de color.');
+            }
+        }
+
+        function toggleHint() {
+            const helpBox = document.getElementById('help-box');
+            helpBox.style.display = helpBox.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function resetChallenge() {
+            if (confirm('¿Seguro que deseas reiniciar este desafío? Tu código actual para esta sección se borrará.')) {
+                editor.value = challenges[currentChallenge].starterCSS;
+                updateActual();
+                updateLineNumbers();
+                try { localStorage.removeItem(`tarjetas_challenge_${currentChallenge}`); } catch(e) {}
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            const numbers = Array.from({length: Math.max(lines, 12)}, (_, i) => i + 1).join('<br>');
+            document.getElementById('line-numbers').innerHTML = numbers;
+        }
+
+        let timeout;
+        editor.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateActual, 250);
+            updateLineNumbers();
+        });
+
+        editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+                updateActual();
+                updateLineNumbers();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChallenge(0);
+            try {
+                const completed = JSON.parse(localStorage.getItem('progress_tarjetas') || '[]');
+                completed.forEach(idx => {
+                    const btn = document.querySelectorAll('.challenge-btn')[idx];
+                    if (btn) btn.classList.add('completed');
+                });
+            } catch(e) {}
+        });
+    </script>
+</body>
+</html>

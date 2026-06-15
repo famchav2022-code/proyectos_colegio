@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imágenes - CSS Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #48bb78;
+            --primary-dark: #38a169;
+            --secondary: #1a1a2e;
+            --accent: #f093fb;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-light: #0f3460;
+            --text-light: #f1f1f1;
+            --text-muted: #a0aec0;
+            --editor-bg: #1e1e1e;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .challenge-page {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .challenge-header {
+            background: var(--bg-card);
+            padding: 0.75rem 2rem;
+            border-bottom: 2px solid var(--primary);
+            flex-shrink: 0;
+        }
+
+        .challenge-header .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .challenge-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .challenge-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .challenge-nav {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .challenge-btn {
+            padding: 0.4rem 1rem;
+            background: var(--bg-light);
+            border: 2px solid transparent;
+            color: var(--text-muted);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .challenge-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .challenge-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            font-weight: 600;
+        }
+
+        .challenge-btn.completed {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+
+        .challenge-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 1fr;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .info-panel {
+            background: var(--bg-card);
+            border-right: 1px solid var(--bg-light);
+            padding: 1.25rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-panel h2 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+        }
+
+        .info-panel .description {
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+
+        .info-panel .description code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #63b3ed;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .concepts-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--warning);
+        }
+
+        .concepts-box h3 {
+            color: var(--warning);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .concepts-box ul { list-style: none; padding: 0; margin: 0; }
+
+        .concepts-box li {
+            padding: 0.35rem 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .concepts-box li code {
+            background: var(--editor-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            color: #9cdcfe;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .help-box {
+            background: var(--bg-dark);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+            border-left: 4px solid var(--success);
+            margin-top: auto;
+        }
+
+        .help-box h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .help-box p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .editor-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--editor-bg);
+            border-right: 1px solid #333;
+            min-height: 0;
+        }
+
+        .editor-tabs {
+            display: flex;
+            background: #252526;
+            border-bottom: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .editor-tab {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            border-bottom: 2px solid transparent;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .editor-tab.active {
+            color: var(--text-light);
+            border-bottom-color: var(--primary);
+            background: var(--editor-bg);
+        }
+
+        .code-editor {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            background: #1e1e1e;
+            color: #858585;
+            padding: 0.75rem 0.6rem;
+            text-align: right;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            user-select: none;
+            border-right: 1px solid #333;
+            min-width: 42px;
+        }
+
+        .editor-textarea {
+            flex: 1;
+            background: var(--editor-bg);
+            color: #d4d4d4;
+            border: none;
+            padding: 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+            tab-size: 4;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-top: 1px solid var(--bg-light);
+            flex-shrink: 0;
+        }
+
+        .btn-check {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-check:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.3);
+        }
+
+        .btn-hint {
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, var(--warning), #dd6b20);
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-hint:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.3);
+        }
+
+        .btn-reset {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--text-muted);
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 0.85rem;
+        }
+
+        .btn-reset:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .output-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-dark);
+            min-height: 0;
+        }
+
+        .output-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 2px solid var(--bg-light);
+            min-height: 0;
+        }
+
+        .output-section:last-child { border-bottom: none; }
+
+        .output-header {
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--bg-light);
+            flex-shrink: 0;
+        }
+
+        .output-header h3 {
+            font-size: 0.82rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .output-header .status {
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .status.pending {
+            background: rgba(237, 137, 54, 0.2);
+            color: var(--warning);
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.2);
+            color: var(--success);
+        }
+
+        .output-frame {
+            flex: 1;
+            background: #ffffff;
+            overflow: auto;
+            position: relative;
+            min-height: 0;
+        }
+
+        .output-content {
+            padding: 1.5rem;
+            min-height: 100%;
+            color: #2d3748;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--success), #38a169);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .success-message.show { display: flex; }
+
+        @media (max-width: 900px) {
+            .challenge-layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 280px 1fr;
+                overflow-y: auto;
+            }
+            .info-panel { max-height: 350px; }
+        }
+    </style>
+</head>
+<body class="challenge-page">
+
+    <div class="success-message" id="success-msg">
+        <span>🖼️</span>
+        <span>¡Espectacular! Has dominado las propiedades de diseño adaptativo y filtros de imágenes.</span>
+    </div>
+
+    <header class="challenge-header">
+        <a href="../index.html" class="back-link">← Volver al inicio</a>
+        <h1>🖼️ Estilos para Imágenes</h1>
+        <p>Aprende a crear imágenes responsivas, encuadres perfectos sin distorsión y efectos de filtros interactivos.</p>
+        
+        <nav class="challenge-nav" id="challenge-nav">
+            <button class="challenge-btn active" onclick="loadChallenge(0)">Desafío 1</button>
+            <button class="challenge-btn" onclick="loadChallenge(1)">Desafío 2</button>
+            <button class="challenge-btn" onclick="loadChallenge(2)">Desafío 3</button>
+            <button class="challenge-btn" onclick="loadChallenge(3)">Desafío 4</button>
+            <button class="challenge-btn" onclick="loadChallenge(4)">Desafío 5</button>
+        </nav>
+    </header>
+
+    <div class="challenge-layout">
+        <aside class="info-panel">
+            <div id="challenge-info">
+                <h2 id="challenge-title">Cargando...</h2>
+                <p class="description" id="challenge-desc">Cargando descripción...</p>
+                
+                <div class="concepts-box">
+                    <h3>🎯 Conceptos y Propiedades</h3>
+                    <ul id="challenge-concepts">
+                        <li>Cargando...</li>
+                    </ul>
+                </div>
+                
+                <div class="help-box" id="help-box">
+                    <h3>💡 Ayuda / Pista</h3>
+                    <div id="challenge-help">
+                        <p>Cargando ayuda...</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="editor-panel">
+            <div class="editor-tabs">
+                <button class="editor-tab active">styles.css</button>
+            </div>
+            <div class="code-editor">
+                <div class="line-numbers" id="line-numbers">
+                    1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10
+                </div>
+                <textarea class="editor-textarea" id="css-editor" placeholder="/* Escribe tu CSS aquí */" spellcheck="false"></textarea>
+            </div>
+            <div class="action-bar">
+                <button class="btn-check" onclick="checkSolution()">✅ Verificar Solución</button>
+                <button class="btn-hint" onclick="toggleHint()">💡 Ver Pista</button>
+                <button class="btn-reset" onclick="resetChallenge()">🔄 Reiniciar</button>
+            </div>
+        </div>
+
+        <div class="output-panel">
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>🎯 Salida Esperada</h3>
+                    <span class="status pending">Objetivo</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="expected-output"></div>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <div class="output-header">
+                    <h3>👁️ Salida Actual</h3>
+                    <span class="status pending" id="current-status">En progreso</span>
+                </div>
+                <div class="output-frame">
+                    <div class="output-content" id="actual-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const challenges = [
+            {
+                title: "Desafío 1: La Regla de Oro Responsiva",
+                description: "Por defecto, las imágenes grandes rompen la estructura de su contenedor padre si la pantalla es pequeña. Haz que la clase <code>.img-responsiva</code> nunca supere el 100% del ancho del bloque donde se encuentra y que su altura se ajuste automáticamente de forma proporcional.",
+                concepts: [
+                    "<code>max-width: 100%;</code> - Restringe la expansión más allá del contenedor.",
+                    "<code>height: auto;</code> - Mantiene la relación de aspecto original para evitar estiramientos."
+                ],
+                help: "<p>Para evitar que una imagen destruya tu grilla de maquetación, debes acotarla en su plano horizontal máximo. Investiga cómo forzar a que herede dinámicamente los límites del padre sin distorsionarse.</p>",
+                html: '<div style="width:300px; border:2px dashed #f56565; padding:5px;"><img src="https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?w=600" class="img-responsiva" alt="Tecnología"></div>',
+                expectedCSS: '.img-responsiva { max-width: 100%; height: auto; display: block; }',
+                starterCSS: "/* 🎯 Haz la imagen adaptable a los límites de su caja padre */\n.img-responsiva {\n    \n}"
+            },
+            {
+                title: "Desafío 2: Avatar Circular Perfecto",
+                description: "Modifica la clase <code>.avatar-usuario</code> para convertir una imagen cuadrada en un círculo perfecto. Dale un ancho fijo de 120px, un alto fijo de 120px y aplica el radio de borde necesario.",
+                concepts: [
+                    "<code>width</code> y <code>height</code> - Dimensionamiento estricto idéntico.",
+                    "<code>border-radius: 50%;</code> - Convierte cajas equiláteras en circunferencias perfectas."
+                ],
+                help: "<p>Recuerda que para obtener un círculo simétrico, las longitudes horizontal y vertical deben ser matemáticamente iguales. Luego, aplica un radio de borde equivalente a la mitad del porcentaje de su totalidad espacial.</p>",
+                html: '<img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300" class="avatar-usuario" alt="Perfil">',
+                expectedCSS: '.avatar-usuario { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }',
+                starterCSS: "/* 🎯 Define dimensiones simétricas y aplica el radio circular */\n.avatar-usuario {\n    \n}"
+            },
+            {
+                title: "Desafío 3: El Ajuste Inteligente (Object-Fit)",
+                description: "Cuando forzamos dimensiones específicas en una imagen que originalmente tiene otras proporciones, esta tiende a aplastarse. Usa la clase <code>.img-encuadrada</code> para darle un ancho de 250px y alto de 150px. Luego, introduce la propiedad mágica para que recorte la imagen adaptándola al espacio sin perder su ratio.",
+                concepts: [
+                    "<code>object-fit: cover;</code> - Escala e inserta la imagen llenando la caja, recortando el sobrante de forma inteligente sin deformar."
+                ],
+                help: "<p>Pista socrática: Si configuras un ancho y un alto asimétricos, notarás que el rostro o paisaje de la foto pierde su aspecto original. Evita esto inyectando la propiedad <code>object-fit</code> con su valor de cobertura.</p>",
+                html: '<img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500" class="img-encuadrada" alt="Matemáticas">',
+                expectedCSS: '.img-encuadrada { width: 250px; height: 150px; object-fit: cover; border-radius: 8px; }',
+                starterCSS: "/* 🎯 Modifica el tamaño y repara la distorsión del encuadre */\n.img-encuadrada {\n    width: 250px;\n    height: 150px;\n    \n}"
+            },
+            {
+                title: "Desafío 4: Filtro Blanco y Negro Interactivo (Efecto Avanzado)",
+                description: "Crea una estética artística de galería de imágenes. La clase <code>.img-filtro</code> debe mostrar la imagen originalmente en una escala de grises total (100%). Pero cuando el usuario pase el mouse (<code>:hover</code>), debe recuperar sus colores vibrantes naturales (0%).",
+                concepts: [
+                    "<code>filter: grayscale();</code> - Aplica transformaciones matemáticas de color a recursos gráficos.",
+                    "<code>transition</code> - Suaviza el cambio de color cromático."
+                ],
+                help: "<p>¡Reto avanzado! Debes codificar dos selectores. El primero es la clase base <code>.img-filtro</code> con su filtro al 100% y una transición para suavizar el efecto. El segundo será <code>.img-filtro:hover</code>, reduciendo ese mismo filtro a cero.</p>",
+                html: '<img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" class="img-filtro" style="width:280px; border-radius:12px; transition: filter 0.4s;" alt="Espacio">',
+                expectedCSS: '.img-filtro { filter: grayscale(100%); } .img-filtro:hover { filter: grayscale(0%); }',
+                starterCSS: "/* 🎯 Configura el filtro gris en la base y anúlalo en el hover */\n.img-filtro {\n    filter: grayscale(100%);\n}\n\n.img-filtro:hover {\n    \n}"
+            },
+            {
+                title: "Desafío 5: Efecto de Zoom y Desenfoque Cinemático (Efecto Avanzado)",
+                description: "Diseña un efecto cinematográfico interactivo. Al pasar el mouse por encima de <code>.img-zoom:hover</code>, la imagen debe escalarse sutilmente un 10% (<code>transform: scale(1.1);</code>) y aumentar su nitidez, partiendo de un desenfoque inicial base en la clase de 2px (<code>filter: blur(2px);</code>) que disminuya a 0px en hover.",
+                concepts: [
+                    "<code>filter: blur()</code> - Produce un efecto de desenfoque gaussiano controlado.",
+                    "<code>transform: scale()</code> - Multiplica la escala geométrica del elemento en el plano de visualización."
+                ],
+                help: "<p>Pista: Asegúrate de heredar la transición en la imagen para que la animación no ocurra de golpe. En el bloque interactivo hover, declara tanto el escalado ampliado como el valor de desenfoque en cero absoluto.</p>",
+                html: '<div style="width:280px; height:180px; overflow:hidden; border-radius:12px;"><img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500" class="img-zoom" style="width:100%; height:100%; object-fit:cover; transition:all 0.5s; filter: blur(2px);" alt="Código"></div>',
+                expectedCSS: '.img-zoom { filter: blur(2px); } .img-zoom:hover { transform: scale(1.1); filter: blur(0px); }',
+                starterCSS: "/* 🎯 Genera el escalado y remueve el desenfoque base en tiempo de hover */\n.img-zoom:hover {\n    \n}"
+            }
+        ];
+
+        let currentChallenge = 0;
+        const editor = document.getElementById('css-editor');
+        const expectedOutput = document.getElementById('expected-output');
+        const actualOutput = document.getElementById('actual-output');
+        const currentStatus = document.getElementById('current-status');
+        const successMsg = document.getElementById('success-msg');
+
+        function loadChallenge(index) {
+            currentChallenge = index;
+            const challenge = challenges[index];
+            
+            document.querySelectorAll('.challenge-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            
+            document.getElementById('challenge-title').innerHTML = challenge.title;
+            document.getElementById('challenge-desc').innerHTML = challenge.description;
+            
+            const conceptsList = document.getElementById('challenge-concepts');
+            conceptsList.innerHTML = challenge.concepts.map(c => `<li>${c}</li>`).join('');
+            
+            document.getElementById('challenge-help').innerHTML = challenge.help;
+            
+            try {
+                const saved = localStorage.getItem(`imagenes_challenge_${index}`);
+                editor.value = saved || challenge.starterCSS;
+            } catch(e) {
+                editor.value = challenge.starterCSS;
+            }
+            
+            const scopedExpectedCSS = scopeCSS(challenge.expectedCSS, '#expected-output');
+            expectedOutput.innerHTML = `<style>${scopedExpectedCSS}</style>${challenge.html}`;
+            
+            updateActual();
+            updateLineNumbers();
+        }
+
+        function updateActual() {
+            const challenge = challenges[currentChallenge];
+            const userCSS = editor.value;
+            
+            const scopedUserCSS = scopeCSS(userCSS, '#actual-output');
+            actualOutput.innerHTML = `<style>${scopedUserCSS}</style>${challenge.html}`;
+            
+            try {
+                localStorage.setItem(`imagenes_challenge_${currentChallenge}`, userCSS);
+            } catch(e) {}
+            
+            checkSimilarity(userCSS);
+        }
+
+        function scopeCSS(cssText, selectorPadre) {
+            if (!cssText) return '';
+            let cleanCSS = cssText.replace(/\/\*[\s\S]*?\*\//g, '');
+            return cleanCSS.replace(/([^\s{][^{]*)\{([^}]*)\}/g, (match, selector, propiedades) => {
+                const selectoresIndividuales = selector.split(',');
+                const selectoresConScope = selectoresIndividuales.map(sel => {
+                    let s = sel.trim();
+                    if (s.length === 0) return '';
+                    if (s.startsWith(selectorPadre)) return s;
+                    return `${selectorPadre} ${s}`;
+                });
+                return `${selectoresConScope.join(', ')} { ${propiedades} }`;
+            });
+        }
+
+        function checkSimilarity(userCSS) {
+            let hasRequired = false;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            
+            switch(currentChallenge) {
+                case 0: hasRequired = cleanUser.includes('max-width:100%'); break;
+                case 1: hasRequired = cleanUser.includes('border-radius:50%') || cleanUser.includes('border-radius:120px'); break;
+                case 2: hasRequired = cleanUser.includes('object-fit:cover'); break;
+                case 3: hasRequired = cleanUser.includes('grayscale(0%)') && cleanUser.includes(':hover'); break;
+                case 4: hasRequired = cleanUser.includes('scale(1.1)') && cleanUser.includes('blur(0px)'); break;
+            }
+            
+            if (hasRequired && cleanUser.length > 10) {
+                currentStatus.textContent = '¡Muy bien! 🎉';
+                currentStatus.className = 'status success';
+            } else {
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function checkSolution() {
+            const userCSS = editor.value;
+            const cleanUser = userCSS.replace(/\s/g, '').replace(/["']/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+            let isCorrect = false;
+
+            switch(currentChallenge) {
+                case 0: isCorrect = cleanUser.includes('max-width:100%') && cleanUser.includes('height:auto'); break;
+                case 1: isCorrect = cleanUser.includes('width:120px') && cleanUser.includes('height:120px') && cleanUser.includes('border-radius:50%'); break;
+                case 2: isCorrect = cleanUser.includes('width:250px') && cleanUser.includes('height:150px') && cleanUser.includes('object-fit:cover'); break;
+                case 3: isCorrect = cleanUser.includes('.img-filtro:hover') && cleanUser.includes('filter:grayscale(0%)'); break;
+                case 4: isCorrect = cleanUser.includes('.img-zoom:hover') && cleanUser.includes('transform:scale(1.1)') && cleanUser.includes('filter:blur(0px)'); break;
+            }
+
+            if (isCorrect) {
+                try {
+                    let completed = JSON.parse(localStorage.getItem('progress_imagenes') || '[]');
+                    if (!completed.includes(currentChallenge)) {
+                        completed.push(currentChallenge);
+                        localStorage.setItem('progress_imagenes', JSON.stringify(completed));
+                    }
+                } catch(e) {}
+                
+                const btn = document.querySelectorAll('.challenge-btn')[currentChallenge];
+                if (btn) btn.classList.add('completed');
+                
+                successMsg.classList.add('show');
+                setTimeout(() => successMsg.classList.remove('show'), 3000);
+                
+                currentStatus.textContent = '¡Completado! ✅';
+                currentStatus.className = 'status success';
+            } else {
+                alert('El procesador visual detecta que las proporciones del encuadre o los argumentos de filtro no corresponden exactamente al resultado técnico esperado. Revisa los valores numéricos y el uso de los paréntesis en las funciones filter.');
+            }
+        }
+
+        function toggleHint() {
+            const helpBox = document.getElementById('help-box');
+            helpBox.style.display = helpBox.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function resetChallenge() {
+            if (confirm('¿Seguro que deseas reiniciar este desafío? Tu código actual para esta sección se borrará.')) {
+                editor.value = challenges[currentChallenge].starterCSS;
+                updateActual();
+                updateLineNumbers();
+                try { localStorage.removeItem(`imagenes_challenge_${currentChallenge}`); } catch(e) {}
+                currentStatus.textContent = 'En progreso';
+                currentStatus.className = 'status pending';
+            }
+        }
+
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            const numbers = Array.from({length: Math.max(lines, 12)}, (_, i) => i + 1).join('<br>');
+            document.getElementById('line-numbers').innerHTML = numbers;
+        }
+
+        let timeout;
+        editor.addEventListener('input', () => {
+            clearTimeout(timeout);
+            timeout = setTimeout(updateActual, 250);
+            updateLineNumbers();
+        });
+
+        editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+                updateActual();
+                updateLineNumbers();
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadChallenge(0);
+            try {
+                const completed = JSON.parse(localStorage.getItem('progress_imagenes') || '[]');
+                completed.forEach(idx => {
+                    const btn = document.querySelectorAll('.challenge-btn')[idx];
+                    if (btn) btn.classList.add('completed');
+                });
+            } catch(e) {}
+        });
+    </script>
+</body>
+</html>

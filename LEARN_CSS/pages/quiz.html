@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Diagnóstica: CSS Inicial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5a67d8;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #f56565;
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --bg-light: #0f3460;
+            --text-light: #f1f1f1;
+            --text-muted: #a0aec0;
+            --radius-md: 12px;
+            --radius-sm: 6px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quiz-header {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            border-bottom: 4px solid var(--primary);
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 0.75rem;
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: #fff; }
+        .subtitle { color: var(--text-muted); font-size: 0.95rem; }
+
+        .student-info-box {
+            background: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: var(--radius-sm);
+            margin-top: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .input-group label { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+        .input-group input {
+            padding: 0.6rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--primary);
+            border-radius: 4px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .question-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-left: 4px solid var(--bg-light);
+            transition: border-color 0.3s;
+        }
+
+        .question-card.answered { border-left-color: var(--primary); }
+
+        .question-num {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+
+        .question-text { font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; }
+        
+        .code-block {
+            background: var(--bg-dark);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: #9cdcfe;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            border-left: 3px solid var(--warning);
+        }
+
+        .options-list { display: flex; flex-direction: column; gap: 0.65rem; }
+
+        .option-label {
+            background: var(--bg-light);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .option-label:hover { background: rgba(102, 126, 234, 0.15); border-color: var(--primary); }
+        .option-label input { accent-color: var(--primary); width: 16px; height: 16px; }
+
+        .results-panel {
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-light));
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 2px solid var(--success);
+        }
+
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            background: var(--bg-dark);
+            border: 4px solid var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 1rem auto;
+            color: var(--success);
+        }
+
+        .btn-action {
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-submit { background: var(--primary); color: white; width: 100%; padding: 1rem; font-size: 1.1rem; }
+        .btn-submit:hover { background: var(--primary-dark); }
+        
+        .btn-print { background: var(--success); color: white; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-print:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(72,187,120,0.3); }
+
+        #print-report-header { display: none; }
+
+        @media print {
+            body { background: white; color: black; padding: 0; font-size: 12pt; }
+            .container { max-width: 100%; }
+            .quiz-header, .btn-submit, .option-label input, .back-link { display: none !important; }
+            
+            #print-report-header {
+                display: block !important;
+                border-bottom: 3px double #333;
+                padding-bottom: 1rem;
+                margin-bottom: 2rem;
+            }
+            #print-report-header h2 { font-size: 22pt; color: #000; margin-bottom: 0.3rem; }
+            
+            .question-card {
+                background: white !important;
+                color: black !important;
+                border: 1px solid #ccc !important;
+                border-left: 5px solid #333 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            .code-block { background: #f4f4f4 !important; color: #000 !important; border: 1px solid #ddd !important; border-left: 3px solid #333 !important; }
+            .option-label { background: white !important; border: 1px solid #eee !important; color: black !important; padding: 0.4rem; }
+            
+            .option-label.selected-print { background: #e2e8f0 !important; border-color: #4a5568 !important; font-weight: bold; }
+            .option-label.selected-print::before { content: "✓ "; color: green; }
+
+            .results-panel { display: block !important; background: white !important; border: 2px solid black !important; color: black !important; box-shadow: none !important; margin-top: 2rem; page-break-inside: avoid; }
+            .score-circle { border-color: black !important; color: black !important; background: white !important; }
+            .btn-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="print-report-header">
+            <h2>Reporte de Evaluación Básica - CSS Inicial</h2>
+            <p><strong>Curso:</strong> Computing (5to de Secundaria)</p>
+            <p><strong>Estudiante:</strong> <span id="lbl-name"></span></p>
+            <p><strong>Grado y Sección:</strong> <span id="lbl-grade"></span></p>
+            <p><strong>Fecha de Emisión:</strong> <span id="lbl-date"></span></p>
+        </div>
+
+        <header class="quiz-header">
+            <a href="../index.html" class="back-link">← Volver al panel de desafíos</a>
+            <h1>📝 Cuestionario Práctico: Fundamentos de CSS</h1>
+            <p class="subtitle">Demuestra lo aprendido sobre la sintaxis de diseño web, selectores básicos y propiedades fundamentales de color y texto.</p>
+            
+            <div class="student-info-box">
+                <div class="input-group">
+                    <label for="student-name">Nombres y Apellidos del Estudiante:</label>
+                    <input type="text" id="student-name" placeholder="Ej. Ana Lucía Flores">
+                </div>
+                <div class="input-group">
+                    <label for="student-grade">Grado / Sección:</label>
+                    <input type="text" id="student-grade" value="5to de Secundaria">
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+            <button type="button" class="btn-action btn-submit" onclick="evaluateQuiz()">📊 Enviar Respuestas y Ver Puntaje</button>
+        </form>
+
+        <section class="results-panel" id="results-panel">
+            <h2>¡Cuestionario Terminado!</h2>
+            <p id="results-welcome-text">Tu puntaje ha sido calculado en base a los criterios del bimester.</p>
+            <div class="score-circle" id="score-display">00/20</div>
+            <p style="margin-bottom: 1rem;" id="score-feedback"></p>
+            <button class="btn-action btn-print" onclick="generatePDF()">🖨️ Guardar Reporte en PDF / Imprimir</button>
+        </section>
+
+    </div>
+
+    <script>
+        // Banco de 20 preguntas nivel Inicial / Intermedio para Secundaria
+        const questionsData = [
+            {
+                q: "¿Qué significan las siglas 'CSS' en el desarrollo de páginas web?",
+                code: "",
+                options: [
+                    "Computer Style Sheets (Hojas de Estilo de Computadora)",
+                    "Cascading Style Sheets (Hojas de Estilo en Cascada)",
+                    "Creative Style Systems (Sistemas de Estilo Creativos)",
+                    "Code Style Syntax (Sintaxis de Estilo de Código)"
+                ],
+                correct: 1
+            },
+            {
+                q: "¿Cuál es la forma correcta de enlazar una hoja de estilos externa llamada 'estilos.css' dentro del documento HTML?",
+                code: "/* Se escribe dentro de la etiqueta <head> </head> */",
+                options: [
+                    "<style src=\"estilos.css\">",
+                    "<link rel=\"stylesheet\" href=\"estilos.css\">",
+                    "<css link=\"estilos.css\">",
+                    "<script href=\"estilos.css\">"
+                ],
+                correct: 1
+            },
+            {
+                q: "En una regla CSS, ¿cómo se separan la propiedad y su respectivo valor?",
+                code: "selector { propiedad __ valor; }",
+                options: [
+                    "Con un signo de igualdad ( = )",
+                    "Con una coma ( , )",
+                    "Con dos puntos ( : )",
+                    "Con un guion bajo ( _ )"
+                ],
+                correct: 2
+            },
+            {
+                q: "Analiza el siguiente código. ¿A qué tipo de elemento afectará este estilo?",
+                code: "p {\n    color: red;\n}",
+                options: [
+                    "A todos los párrafos (<p>) de la página.",
+                    "A los elementos que tengan la clase p.",
+                    "A los elementos cuyo ID sea igual a p.",
+                    "Únicamente al primer título de la página."
+                ],
+                correct: 0
+            },
+            {
+                q: "Si deseas aplicar un estilo exclusivamente a un único elemento usando su atributo id=\"menu\", ¿qué símbolo se usa como selector en CSS?",
+                code: "____menu {\n    background-color: blue;\n}",
+                options: [
+                    "Un punto ( . )",
+                    "Un signo de almohadilla o hashtag ( # )",
+                    "Un signo de porcentaje ( % )",
+                    "Un asterisco ( * )"
+                ],
+                correct: 1
+            },
+            {
+                q: "Para aplicar un mismo estilo a un grupo de elementos diferentes que comparten la clase \"alerta\", ¿cómo se escribe el selector en CSS?",
+                code: "____alerta {\n    color: orange;\n}",
+                options: [
+                    "Con un signo de almohadilla (#alerta)",
+                    "Escribiendo la palabra directamente (alerta)",
+                    "Con un punto (.alerta)",
+                    "Entre paréntesis (alerta)"
+                ],
+                correct: 2
+            },
+            {
+                q: "¿Qué propiedad debes usar si quieres cambiar el color de fondo de una tarjeta o sección?",
+                code: ".tarjeta {\n    ____________________: yellow;\n}",
+                options: ["color", "font-color", "background-color", "box-color"],
+                correct: 2
+            },
+            {
+                q: "¿Qué propiedad cambia el color del texto de un elemento en CSS?",
+                code: "h1 {\n    ________: green;\n}",
+                options: ["text-color", "color", "font-style", "paint"],
+                correct: 1
+            },
+            {
+                q: "Para modificar el tamaño de la letra de un párrafo, ¿cuál es la propiedad CSS correcta?",
+                code: "p {\n    ___________: 18px;\n}",
+                options: ["font-size", "text-size", "font-width", "letter-size"],
+                correct: 0
+            },
+            {
+                q: "¿Qué línea de código CSS centra el texto de un encabezado horizontalmente en la pantalla?",
+                code: "h2 {\n    ______________________;\n}",
+                options: [
+                    "align: center;",
+                    "text-align: center;",
+                    "font-align: middle;",
+                    "text-position: center;"
+                ],
+                correct: 1
+            },
+            {
+                q: "Deseas cambiar la tipografía o tipo de letra de tu página web a 'Arial'. ¿Qué propiedad debes emplear?",
+                code: "body {\n    _______________: 'Arial', sans-serif;\n}",
+                options: ["font-type", "font-style", "font-family", "text-font"],
+                correct: 2
+            },
+            {
+                q: "En el modelo de caja básico, ¿cuál es la propiedad que define el espacio de separación exterior (hacia afuera) de un elemento?",
+                code: "/* Empuja a los elementos vecinos para alejarlos */",
+                options: ["padding", "margin", "border", "width"],
+                correct: 1
+            },
+            {
+                q: "¿Qué propiedad añade un espacio de relleno interior entre el contenido del texto y el borde de su propia caja?",
+                code: "/* Da espacio de respiración dentro del botón o recuadro */",
+                options: ["margin", "padding", "space-inside", "width"],
+                correct: 1
+            },
+            {
+                q: "Si escribes el siguiente código, ¿qué tipo de borde tendrá la caja?",
+                code: ".caja {\n    border: 2px solid black;\n}",
+                options: [
+                    "Un borde invisible de 2 píxeles.",
+                    "Un borde de líneas punteadas negras.",
+                    "Un borde continuo y sólido de color negro.",
+                    "Un borde doble en los lados horizontales."
+                ],
+                correct: 2
+            },
+            {
+                q: "¿Cómo se escribe correctamente un comentario en una hoja de estilos CSS para que el navegador lo ignore?",
+                code: "",
+                options: [
+                    "// Este es un comentario",
+                    "",
+                    "/* Este es un comentario */",
+                    "' Este es un comentario"
+                ],
+                correct: 2
+            },
+            {
+                q: "¿Qué propiedad controla el ancho de una imagen o caja de texto?",
+                code: "img {\n    ________: 300px;\n}",
+                options: ["height", "width", "size", "long"],
+                correct: 1
+            },
+            {
+                q: "Deseas hacer que los títulos <h1> cambien a color azul únicamente cuando el usuario pase el puntero del mouse sobre ellos. ¿Qué opción tiene el selector interactivo correcto?",
+                code: "/* Estado dinámico al pasar el mouse */",
+                options: ["h1:click", "h1:hover", "h1:active", "h1:focus"],
+                correct: 1
+            },
+            {
+                q: "Para transformar las esquinas rectas de una caja en bordes redondeados y suaves, ¿qué propiedad debes aplicar?",
+                code: ".caja {\n    ________________: 8px;\n}",
+                options: ["border-shape", "border-radius", "box-radius", "corner-round"],
+                correct: 1
+            },
+            {
+                q: "Si aplicas la propiedad cursor: pointer; a un botón, ¿qué cambio experimentará el usuario al interactuar con él?",
+                code: "button {\n    cursor: pointer;\n}",
+                options: [
+                    "El botón se moverá de sitio automáticamente.",
+                    "El puntero del mouse se transformará en una 'manito' interactiva.",
+                    "El texto del botón se volverá un hipervínculo.",
+                    "El cursor desaparecerá por completo de la pantalla."
+                ],
+                correct: 1
+            },
+            {
+                q: "Analiza el siguiente bloque CSS. ¿De qué color se mostrará finalmente el fondo de la caja?",
+                code: ".caja {\n    background-color: blue;\n    background-color: green;\n}",
+                options: [
+                    "Azul, porque fue la primera instrucción declarada.",
+                    "Verde, porque en CSS las reglas de abajo reemplazan a las de arriba (lectura secuencial).",
+                    "Se mezclará formando un color cian.",
+                    "No se mostrará ningún color debido a un error crítico."
+                ],
+                correct: 1
+            }
+        ];
+
+        // Renderizar las preguntas dinámicamente en el HTML
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questionsData.forEach((qData, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                let codeHtml = qData.code ? `<pre class="code-block"><code>${qData.code}</code></pre>` : '';
+
+                let optionsHtml = qData.options.map((opt, optIdx) => `
+                    <label class="option-label" id="label-${index}-${optIdx}">
+                        <input type="radio" name="question-${index}" value="${optIdx}" onchange="markAsAnswered(${index})">
+                        <span>${opt}</span>
+                    </label>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="question-num">Pregunta ${index + 1} de 20</div>
+                    <div class="question-text">${qData.q}</div>
+                    ${codeHtml}
+                    <div class="options-list">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function markAsAnswered(qIdx) {
+            document.getElementById(`q-card-${qIdx}`).classList.add('answered');
+        }
+
+        // Procesar y evaluar las respuestas
+        function evaluateQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) {
+                alert('Por favor, escribe tus Nombres y Apellidos completos para generar tu reporte de notas.');
+                document.getElementById('student-name').focus();
+                return;
+            }
+
+            let score = 0;
+            
+            questionsData.forEach((qData, index) => {
+                const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+                
+                // Limpiar clases de impresión previas
+                for(let i=0; i<4; i++){
+                    const lbl = document.getElementById(`label-${index}-${i}`);
+                    if(lbl) lbl.classList.remove('selected-print');
+                }
+
+                if (selected) {
+                    const answerVal = parseInt(selected.value);
+                    document.getElementById(`label-${index}-${answerVal}`).classList.add('selected-print');
+                    if (answerVal === qData.correct) {
+                        score++;
+                    }
+                }
+            });
+
+            // Mostrar el panel de resultados
+            const resultsPanel = document.getElementById('results-panel');
+            resultsPanel.style.display = 'block';
+            
+            const scoreDisplay = document.getElementById('score-display');
+            scoreDisplay.textContent = `${score}/20`;
+
+            // Escala Literal Regular del Sistema Educativo del Colegio
+            const feedbackDisplay = document.getElementById('score-feedback');
+            if (score >= 18) {
+                feedbackDisplay.innerHTML = "<strong>Calificación: AD (Logro Destacado)</strong><br>¡Excelente trabajo! Has demostrado comprender a la perfección la sintaxis y el propósito de CSS inicial.";
+                scoreDisplay.style.borderColor = "var(--success)";
+                scoreDisplay.style.color = "var(--success)";
+            } else if (score >= 14) {
+                feedbackDisplay.innerHTML = "<strong>Calificación: A (Logro Previsto)</strong><br>¡Muy buen nivel! Logras identificar las propiedades fundamentales y los tipos de selectores con seguridad.";
+                scoreDisplay.style.borderColor = "var(--primary)";
+                scoreDisplay.style.color = "var(--primary)";
+            } else if (score >= 11) {
+                feedbackDisplay.innerHTML = "<strong>Calificación: B (En Proceso)</strong><br>Buen intento. Reconoces varios conceptos, pero te sugerimos practicar un poco más el uso de puntos y numerales en los selectores.";
+                scoreDisplay.style.borderColor = "var(--warning)";
+                scoreDisplay.style.color = "var(--warning)";
+            } else {
+                feedbackDisplay.innerHTML = "<strong>Calificación: C (En Inicio)</strong><br>Estamos empezando el camino del diseño. Te invitamos a repasar los primeros desafíos prácticos de la plataforma para consolidar las bases.";
+                scoreDisplay.style.borderColor = "var(--danger)";
+                scoreDisplay.style.color = "var(--danger)";
+            }
+
+            resultsPanel.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Lógica de impresión para volcar los datos al motor nativo de PDF
+        function generatePDF() {
+            document.getElementById('lbl-name').textContent = document.getElementById('student-name').value || "No especificado";
+            document.getElementById('lbl-grade').textContent = document.getElementById('student-grade').value || "5to de Secundaria";
+            
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('lbl-date').textContent = new Date().toLocaleDateString('es-PE', options);
+
+            window.print();
+        }
+
+        window.addEventListener('DOMContentLoaded', renderQuestions);
+    </script>
+</body>
+</html>
