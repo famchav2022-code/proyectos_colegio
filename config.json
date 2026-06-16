@@ -2,13 +2,13 @@
   {
     "nombre": "EUREKA SECUNDARIA",
     "descripcion": "Feria de Ciencias 2026",
-    "url": "https://script.google.com/macros/s/AKfycbyCU0WpshOB_BYAPMaVGvAXWDyutYsGo135-kNOUj4qmF_bcMRMRMilFcf7voJBRiER/exec?v=concurso",
+    "url": "https://script.google.com/macros/s/AKfycbxil6d26HZsWHJ197p8CICVHnHHk9dkUfu5qMN4FnyOOuUDX1yNTgNVX3iChFKNrVLC/exec?v=concurso",
     "activo": true
   },
   {
     "nombre": "JUNIOR RESEARCH",
     "descripcion": "Revista Científica",
-    "url": "https://script.google.com/macros/s/AKfycbyCU0WpshOB_BYAPMaVGvAXWDyutYsGo135-kNOUj4qmF_bcMRMRMilFcf7voJBRiER/exec?v=revista",
+    "url": "https://script.google.com/macros/s/AKfycbxil6d26HZsWHJ197p8CICVHnHHk9dkUfu5qMN4FnyOOuUDX1yNTgNVX3iChFKNrVLC/exec?v=revista",
     "activo": true
   },
   {
@@ -20,7 +20,7 @@
   {
     "nombre": "FERIA DE CIENCIAS PRIMARIA",
     "descripcion": "Recursos para elaboración de proyectos en Primaria",
-    "url": "https://script.google.com/macros/s/AKfycbyCU0WpshOB_BYAPMaVGvAXWDyutYsGo135-kNOUj4qmF_bcMRMRMilFcf7voJBRiER/exec?v=notas",
+    "url": "https://script.google.com/macros/s/AKfycbxil6d26HZsWHJ197p8CICVHnHHk9dkUfu5qMN4FnyOOuUDX1yNTgNVX3iChFKNrVLC/exec?v=notas",
     "activo": true
   }
 ]
