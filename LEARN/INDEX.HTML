@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Mastery - Panel Principal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #f59e0b; /* Color amarillo representativo de JavaScript */
+            --primary-hover: #d97706;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); padding: 2rem; }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        header { margin-bottom: 3rem; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { font-size: 2.2rem; font-weight: 700; }
+        header h1 span { color: var(--primary); }
+        .back-link { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+        .back-link:hover { color: #fff; }
+
+        /* Barra de Progreso General */
+        .progress-box { background: var(--bg-card); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 3rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .progress-info { display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-weight: 600; }
+        .progress-bar { background: #334155; height: 12px; border-radius: 6px; overflow: hidden; }
+        .progress-fill { background: var(--primary); width: 0%; height: 100%; transition: width 0.5s ease; }
+
+        /* Grilla de Módulos */
+        .modules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        
+        .module-card { 
+            background: var(--bg-card); border: 2px solid transparent; border-radius: var(--radius); 
+            padding: 1.5rem; text-decoration: none; color: inherit; display: flex; flex-direction: column;
+            justify-content: space-between; transition: all 0.3s ease; height: 220px;
+        }
+        .module-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
+        
+        .card-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .module-card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; color: #fff; }
+        .module-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem; }
+        
+        .card-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .badge { background: #334155; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status-badge { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
+        .status-badge.done { color: var(--success); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div>
+                <h1>JavaScript <span>Mastery</span></h1>
+                <p style="color: var(--text-muted)">Aprende a controlar e interactuar con el DOM de tus páginas web</p>
+            </div>
+            <a href="../index.html" class="back-link">← Volver a CSS Mastery</a>
+        </header>
+
+        <div class="progress-box">
+            <div class="progress-info">
+                <span>Tu Progreso en JavaScript</span>
+                <span id="progress-text">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <div class="modules-grid">
+            <a href="pages/selectores.html" class="module-card" id="card-selectores">
+                <div>
+                    <div class="card-icon">🔍</div>
+                    <h3>1. Selección del DOM</h3>
+                    <p>Aprende a buscar y apuntar a elementos usando getElementById y querySelector.</p>
+                </div>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="status-badge" id="status-selectores">Pendiente</span>
+                </div>
+            </a>
+
+            <a href="pages/contenido.html" class="module-card" id="card-contenido">
+                <div>
+                    <div class="card-icon">✍️</div>
+                    <h3>2. Modificación de Contenidos</h3>
+                    <p>Cambia dinámicamente los textos e inyecta etiquetas HTML usando código.</p>
+                </div>
+                <div class="card-meta">
+                    <span class="badge">5 Desafíos</span>
+                    <span class="status-badge" id="status-contenido">Pendiente</span>
+                </div>
+            </a>
+            <a href="pages/eventos.html" class="module-card">
+        <div class="card-icon">🖱️</div>
+        <h3>3. Eventos</h3>
+        <p>Haz que tu página responda a clics y acciones del usuario.</p>
+        <div class="card-meta"><span class="badge">5 Retos</span></div>
+    </a>
+    <a href="pages/estilos_js.html" class="module-card">
+        <div class="card-icon">🎨</div>
+        <h3>4. Estilos Dinámicos</h3>
+        <p>Modifica el CSS directamente desde tus scripts.</p>
+        <div class="card-meta"><span class="badge">5 Retos</span></div>
+    </a>
+    <a href="pages/clases.html" class="module-card">
+        <div class="card-icon">🏷️</div>
+        <h3>5. Gestión de Clases</h3>
+        <p>La forma profesional de manejar estados visuales con classList.</p>
+        <div class="card-meta"><span class="badge">5 Retos</span></div>
+    </a>
+        </div>
+    </div>
+
+    <script>
+        
+        const jsModules = ['selectores', 'contenido', 'eventos', 'estilos_js', 'clases'];
+
+        function updateJSProgress() {
+            let totalCompleted = 0;
+            const totalChallenges = jsModules.length * 5;
+
+            jsModules.forEach(mod => {
+                const completed = JSON.parse(localStorage.getItem(`progress_js_${mod}`) || '[]');
+                totalCompleted += completed.length;
+
+                const statusBadge = document.getElementById(`status-${mod}`);
+                if (completed.length === 5) {
+                    statusBadge.textContent = '¡Completado! 🎉';
+                    statusBadge.className = 'status-badge done';
+                } else if (completed.length > 0) {
+                    statusBadge.textContent = `En curso (${completed.length}/5)`;
+                }
+            });
+
+            const percentage = totalChallenges > 0 ? Math.round((totalCompleted / totalChallenges) * 100) : 0;
+            document.getElementById('progress-text').textContent = percentage + '%';
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        window.onload = updateJSProgress;
+    </script>
+</body>
+</html>
