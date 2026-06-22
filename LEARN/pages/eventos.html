@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Módulo: Eventos - JS Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/mastery-style.css"> <style>
+        /* Estilos específicos de la vista previa de este módulo */
+        :root { --primary: #f59e0b; --bg-dark: #0f172a; --bg-card: #1e293b; --bg-light: #334155; --text-light: #f8fafc; --text-muted: #94a3b8; --editor-bg: #1e1e1e; --success: #10b981; --warning: #f59e0b; --radius-sm: 6px; --radius-md: 12px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { background: var(--bg-card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--bg-light); }
+        .header h1 { font-size: 1.4rem; color: #fff; }
+        .header h1 span { color: var(--primary); }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+        .main-container { flex: 1; display: flex; overflow: hidden; }
+        .sidebar { width: 360px; background: var(--bg-card); display: flex; flex-direction: column; border-right: 1px solid var(--bg-light); }
+        .nav-challenges { display: flex; gap: 0.5rem; padding: 1rem; background: rgba(0,0,0,0.2); overflow-x: auto; }
+        .challenge-btn { background: var(--bg-light); color: var(--text-muted); border: none; padding: 0.5rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .challenge-btn.active { background: var(--primary); color: white; }
+        .challenge-btn.completed { border: 2px solid var(--success); color: var(--success); }
+        .instructions { flex: 1; padding: 1.5rem; overflow-y: auto; }
+        .instructions h2 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary); }
+        .instructions p { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; line-height: 1.6; }
+        .hint-box { background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; }
+        .editor-container { flex: 1; display: flex; flex-direction: column; background: var(--editor-bg); }
+        .panel-title { background: #111827; padding: 0.5rem 1rem; font-size: 0.8rem; color: var(--text-muted); }
+        .editor-wrapper { flex: 1; display: flex; position: relative; font-family: 'Fira Code', monospace; font-size: 14px; }
+        .line-numbers { padding: 1rem 0.5rem; color: #4b5563; text-align: right; width: 40px; background: #18181b; line-height: 1.6; }
+        .code-textarea { flex: 1; background: transparent; color: #facc15; border: none; resize: none; padding: 1rem; line-height: 1.6; outline: none; }
+        .preview-container { width: 400px; background: #f1f5f9; display: flex; flex-direction: column; border-left: 1px solid var(--bg-light); color: #334155; }
+        .preview-box { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        .action-bar { display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--bg-card); border-top: 1px solid var(--bg-light); }
+        .status-message { font-size: 0.85rem; font-weight: 600; padding: 0.4rem 0.75rem; border-radius: var(--radius-sm); }
+        .status-message.pending { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
+        .status-message.success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .btn { padding: 0.6rem 1.2rem; font-weight: 600; border: none; border-radius: var(--radius-sm); cursor: pointer; font-family: inherit; }
+        .btn-check { background: var(--success); color: white; }
+
+        /* Elementos del juego */
+        .game-card { background: white; padding: 20px; border-radius: 12px; text-align: center; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .display-text { font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: #1e293b; }
+        .action-trigger { background: #6366f1; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Módulo 3: El Poder de los Clics (<span>Eventos</span>)</h1>
+        <a href="../index.html" class="back-btn">← Volver al Panel</a>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="nav-challenges" id="challenges-nav"></div>
+            <div class="instructions">
+                <h2 id="challenge-title">...</h2>
+                <p id="challenge-desc">...</p>
+                <div class="hint-box" id="challenge-hint">...</div>
+            </div>
+            <div class="action-bar">
+                <span class="status-message pending" id="current-status">En progreso</span>
+                <button class="btn btn-check" onclick="checkSolution()">Verificar</button>
+            </div>
+        </aside>
+
+        <main class="editor-container">
+            <div class="panel-title">Editor JavaScript</div>
+            <div class="editor-wrapper">
+                <div class="line-numbers" id="line-numbers">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10</div>
+                <textarea class="code-textarea" id="js-editor" spellcheck="false"></textarea>
+            </div>
+        </main>
+
+        <section class="preview-container">
+            <div class="panel-title" style="background: #e2e8f0; color: #475569;">Vista Previa</div>
+            <div class="preview-box">
+                <div class="game-card">
+                    <p id="mensaje" class="display-text">Estado: Esperando...</p>
+                    <button id="boton-accion" class="action-trigger">¡Haz Clic Aquí!</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const moduleKey = 'progress_js_eventos';
+        let currentChallengeIndex = 0;
+
+        const challenges = [
+            {
+                title: "1. Escuchar el Clic",
+                desc: "Para que un botón haga algo, debemos 'escuchar' el evento <code>'click'</code>. Usa <code>addEventListener</code> en el botón con ID <code>'boton-accion'</code>. Por ahora, deja la función vacía.",
+                hint: "Estructura:<br>elemento.addEventListener('evento', () => { <br>&nbsp;&nbsp;// código aquí <br>});",
+                starterCode: "const boton = document.getElementById('boton-accion');\nboton.addEventListener(",
+                validate: (userCode) => {
+                    return userCode.includes("click") && userCode.includes("addEventListener");
+                }
+            },
+            {
+                title: "2. Reaccionar al Clic",
+                desc: "Ahora haz que, al hacer clic, el texto del párrafo con ID <code>'mensaje'</code> cambie a <code>'¡Botón Pulsado!'</code>.",
+                hint: "Dentro de las llaves <code>{ }</code> de tu función flecha, selecciona el mensaje y usa <code>textContent</code>.",
+                starterCode: "const boton = document.getElementById('boton-accion');\nconst texto = document.getElementById('mensaje');\n\nboton.addEventListener('click', () => {\n    \n});",
+                validate: () => {
+                    // Simulamos el clic para ver si el DOM cambia
+                    document.getElementById('boton-accion').click();
+                    return document.getElementById('mensaje').textContent === '¡Botón Pulsado!';
+                }
+            },
+            {
+                title: "3. Contador de Clics",
+                desc: "Declara una variable <code>puntos</code> que empiece en 0. Haz que cada vez que se haga clic en el botón, la variable aumente en 1 y se muestre en el mensaje.",
+                hint: "Usa <code>let puntos = 0;</code> fuera del evento. Dentro del evento usa <code>puntos++</code>.",
+                starterCode: "let puntos = 0;\nconst boton = document.getElementById('boton-accion');\nconst texto = document.getElementById('mensaje');\n\nboton.addEventListener('click', () => {\n    \n});",
+                validate: () => {
+                    const btn = document.getElementById('boton-accion');
+                    btn.click();
+                    btn.click();
+                    return document.getElementById('mensaje').textContent.includes('2');
+                }
+            },
+            {
+                title: "4. Cambiar color del Botón",
+                desc: "Al hacer clic, haz que el botón cambie su propio texto a <code>'¡Activado!'</code>.",
+                hint: "Dentro del evento, puedes usar la variable del botón para cambiar su <code>textContent</code>.",
+                starterCode: "const boton = document.getElementById('boton-accion');\n\nboton.addEventListener('click', () => {\n    \n});",
+                validate: () => {
+                    document.getElementById('boton-accion').click();
+                    return document.getElementById('boton-accion').textContent === '¡Activado!';
+                }
+            },
+            {
+                title: "5. Alerta de Seguridad",
+                desc: "JavaScript puede disparar ventanas emergentes. Haz que al hacer clic en el botón se ejecute el comando <code>alert('Hola Mundo');</code>.",
+                hint: "La función alert se escribe así: <code>alert('tu mensaje');</code>",
+                starterCode: "const boton = document.getElementById('boton-accion');\n\nboton.addEventListener('click', () => {\n    \n});",
+                validate: (userCode) => {
+                    return userCode.includes("alert(") && userCode.includes("'Hola Mundo'");
+                }
+            }
+        ];
+
+        // --- Lógica del Sistema (idéntica a módulos anteriores) ---
+        const editor = document.getElementById('js-editor');
+        function initNav() {
+            const nav = document.getElementById('challenges-nav');
+            nav.innerHTML = '';
+            const completed = JSON.parse(localStorage.getItem(moduleKey) || '[]');
+            challenges.forEach((ch, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `challenge-btn ${idx === currentChallengeIndex ? 'active' : ''} ${completed.includes(idx) ? 'completed' : ''}`;
+                btn.textContent = idx + 1;
+                btn.onclick = () => loadChallenge(idx);
+                nav.appendChild(btn);
+            });
+        }
+        function loadChallenge(index) {
+            currentChallengeIndex = index;
+            const ch = challenges[index];
+            document.getElementById('challenge-title').textContent = ch.title;
+            document.getElementById('challenge-desc').innerHTML = ch.desc;
+            document.getElementById('challenge-hint').innerHTML = `💡 <strong>Pista:</strong> ${ch.hint}`;
+            document.getElementById('mensaje').textContent = 'Estado: Esperando...';
+            document.getElementById('boton-accion').textContent = '¡Haz Clic Aquí!';
+            editor.value = ch.starterCode;
+            initNav();
+        }
+        function checkSolution() {
+            const userCode = editor.value;
+            let success = false;
+            try {
+                const runScript = new Function(userCode);
+                runScript();
+                success = challenges[currentChallengeIndex].validate(userCode);
+            } catch (e) { success = false; }
+            const status = document.getElementById('current-status');
+            if (success) {
+                status.textContent = '¡Excelente! 🎉'; status.className = 'status-message success';
+                let completed = JSON.parse(localStorage.getItem(moduleKey) || '[]');
+                if (!completed.includes(currentChallengeIndex)) {
+                    completed.push(currentChallengeIndex);
+                    localStorage.setItem(moduleKey, JSON.stringify(completed));
+                }
+                initNav();
+            } else {
+                status.textContent = 'No reacciona como se espera ❌'; status.className = 'status-message pending';
+            }
+        }
+        loadChallenge(0);
+    </script>
+</body>
+</html>

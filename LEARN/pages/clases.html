@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo: Gestión de Clases - JS Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f59e0b;
+            --primary-dark: #d97706;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-light: #334155;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --editor-bg: #1e1e1e;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        .header { background: var(--bg-card); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--bg-light); }
+        .header h1 { font-size: 1.4rem; color: #fff; display: flex; align-items: center; gap: 0.5rem; }
+        .header h1 span { color: var(--primary); }
+        .back-btn { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .back-btn:hover { color: #fff; }
+
+        .main-container { flex: 1; display: flex; overflow: hidden; }
+
+        .sidebar { width: 360px; background: var(--bg-card); display: flex; flex-direction: column; border-right: 1px solid var(--bg-light); }
+        .nav-challenges { display: flex; gap: 0.5rem; padding: 1rem; background: rgba(0,0,0,0.2); overflow-x: auto; }
+        .challenge-btn { background: var(--bg-light); color: var(--text-muted); border: none; padding: 0.5rem 0.8rem; border-radius: var(--radius-sm); cursor: pointer; font-weight: 600; font-size: 0.85rem; min-width: 40px; }
+        .challenge-btn.active { background: var(--primary); color: white; }
+        .challenge-btn.completed { border: 2px solid var(--success); color: var(--success); }
+
+        .instructions { flex: 1; padding: 1.5rem; overflow-y: auto; }
+        .instructions h2 { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary); }
+        .instructions p { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 1rem; line-height: 1.6; }
+        .hint-box { background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning); padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; color: #e2e8f0; }
+
+        .editor-container { flex: 1; display: flex; flex-direction: column; background: var(--editor-bg); }
+        .panel-title { background: #111827; padding: 0.5rem 1rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+        .editor-wrapper { flex: 1; display: flex; position: relative; font-family: 'Fira Code', monospace; font-size: 14px; }
+        .line-numbers { padding: 1rem 0.5rem; color: #4b5563; text-align: right; width: 40px; background: #18181b; user-select: none; line-height: 1.6; }
+        .code-textarea { flex: 1; background: transparent; color: #facc15; border: none; resize: none; padding: 1rem; line-height: 1.6; font-family: inherit; font-size: inherit; outline: none; white-space: pre; }
+
+        .preview-container { width: 400px; background: #f1f5f9; display: flex; flex-direction: column; border-left: 1px solid var(--bg-light); color: #334155; }
+        .preview-box { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem; }
+        
+        /* Contenedores de prueba con clases preexistentes */
+        .caja-clase-base {
+            width: 180px; height: 100px; background-color: #64748b; color: white;
+            display: flex; justify-content: center; align-items: center; font-weight: 600;
+            border-radius: var(--radius-md); text-align: center; padding: 1rem; transition: all 0.3s;
+        }
+
+        /* Clases CSS preparadas que el alumno "encenderá" o "apagará" con JS */
+        .caja-clase-base.modo-exito { background-color: #10b981; box-shadow: 0 4px 14px rgba(16,185,129,0.4); }
+        .caja-clase-base.modo-error { background-color: #ef4444; border: 3px solid #b91c1c; }
+        .caja-clase-base.borde-resaltado { border: 4px dashed #f59e0b; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Módulo 5: Control de Clases (<span>classList</span>)</h1>
+        <a href="../index.html" class="back-btn">← Volver al Panel</a>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="nav-challenges" id="challenges-nav"></div>
+            <div class="instructions">
+                <h2 id="challenge-title">Cargando...</h2>
+                <p id="challenge-desc">Cargando...</p>
+                <div class="hint-box" id="challenge-hint">Cargando...</div>
+            </div>
+            <div class="action-bar">
+                <span class="status-message pending" id="current-status">En progreso</span>
+                <div class="btn-group">
+                    <button class="btn btn-reset" onclick="resetCode()">Reiniciar</button>
+                    <button class="btn btn-check" onclick="checkSolution()">Verificar</button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="editor-container">
+            <div class="panel-title">Editor JavaScript</div>
+            <div class="editor-wrapper">
+                <div class="line-numbers" id="line-numbers"></div>
+                <textarea class="code-textarea" id="js-editor" spellcheck="false"></textarea>
+            </div>
+        </main>
+
+        <section class="preview-container">
+            <div class="panel-title" style="background: #e2e8f0; color: #475569;">Vista Previa HTML Real</div>
+            <div class="preview-box">
+                <div id="elemento-nodo" class="caja-clase-base">Mensaje de Estado</div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const moduleKey = 'progress_js_clases';
+        let currentChallengeIndex = 0;
+
+        const challenges = [
+            {
+                title: "1. Añadir una Clase (Add)",
+                desc: "Para encender un estilo predefinido, usamos el método <code>.classList.add()</code>. Añade la clase CSS llamada <code>'modo-exito'</code> a nuestro contenedor con ID <code>'elemento-nodo'</code>.",
+                hint: "Sintaxis: elemento.classList.add('nombre-de-la-clase');<br>¡Atención! La clase va como texto dentro de comillas, pero SIN el punto delantero.",
+                starterCode: "const contenedor = document.getElementById('elemento-nodo');\ncontenedor.",
+                validate: () => {
+                    return document.getElementById('elemento-nodo').classList.contains('modo-exito');
+                }
+            },
+            {
+                title: "2. Remover una Clase (Remove)",
+                desc: "Si un elemento ya posee un estilo y quieres quitárselo, usamos el método opuesto. Remueve la clase <code>'modo-error'</code> del contenedor.",
+                hint: "Sintaxis básica: elemento.classList.remove('nombre_clase');",
+                starterCode: "const contenedor = document.getElementById('elemento-nodo');\ncontenedor.",
+                validate: () => {
+                    return !document.getElementById('elemento-nodo').classList.contains('modo-error');
+                }
+            },
+            {
+                title: "3. El Interruptor Mágico (Toggle)",
+                desc: "El método <code>.classList.toggle()</code> funciona como un interruptor de luz: si la clase NO está, la añade; si la clase YA ESTÁ, la remueve de forma automática. Aplica un <code>toggle</code> para activar la clase <code>'borde-resaltado'</code>.",
+                hint: "Sintaxis: elemento.classList.toggle('nombre_clase');",
+                starterCode: "const contenedor = document.getElementById('elemento-nodo');\ncontenedor.",
+                validate: () => {
+                    return document.getElementById('elemento-nodo').classList.contains('borde-resaltado');
+                }
+            },
+            {
+                title: "4. Apagar un interruptor activo",
+                desc: "Para este desafío, la clase <code>'borde-resaltado'</code> se encuentra encendida por defecto en la vista previa. Ejecuta un comando <code>toggle</code> sobre ella para apagarla.",
+                hint: "Al usar toggle sobre una clase activa, esta desaparecerá de la lista de clases del elemento.",
+                starterCode: "const contenedor = document.getElementById('elemento-nodo');\ncontenedor.",
+                validate: () => {
+                    return !document.getElementById('elemento-nodo').classList.contains('borde-resaltado');
+                }
+            },
+            {
+                title: "5. Verificación de Clases (Contains)",
+                desc: "El método <code>.classList.contains('clase')</code> devuelve un valor booleano (verdadero o falso) si la clase existe. Guarda el resultado de verificar si el contenedor posee la clase <code>'modo-exito'</code> dentro de la variable constante llamada <code>tieneClase</code>.",
+                hint: "Sintaxis: const tieneClase = elemento.classList.contains('...');",
+                starterCode: "const contenedor = document.getElementById('elemento-nodo');\nconst tieneClase = ",
+                validate: (userCode, vars) => {
+                    return vars.tieneClase === false && userCode.includes('contains');
+                }
+            }
+        ];
+
+        const editor = document.getElementById('js-editor');
+
+        function initNav() {
+            const nav = document.getElementById('challenges-nav');
+            nav.innerHTML = '';
+            const completed = JSON.parse(localStorage.getItem(moduleKey) || '[]');
+            
+            challenges.forEach((ch, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `challenge-btn ${idx === currentChallengeIndex ? 'active' : ''} ${completed.includes(idx) ? 'completed' : ''}`;
+                btn.textContent = idx + 1;
+                btn.onclick = () => loadChallenge(idx);
+                nav.appendChild(btn);
+            });
+        }
+
+        function loadChallenge(index) {
+            currentChallengeIndex = index;
+            const ch = challenges[index];
+            
+            document.getElementById('challenge-title').textContent = ch.title;
+            document.getElementById('challenge-desc').innerHTML = ch.desc;
+            document.getElementById('challenge-hint').innerHTML = `💡 <strong>Pista de análisis:</strong> ${ch.hint}`;
+            
+            // Configurar estados base del nodo según el desafío seleccionado
+            const el = document.getElementById('elemento-nodo');
+            el.className = "caja-clase-base"; 
+            
+            if (index === 1) {
+                el.classList.add('modo-error'); // Desafío 2 empieza con error
+            } else if (index === 3) {
+                el.classList.add('borde-resaltado'); // Desafío 4 empieza con borde
+            }
+
+            editor.value = ch.starterCode;
+
+            const status = document.getElementById('current-status');
+            status.textContent = 'En progreso';
+            status.className = 'status-message pending';
+
+            initNav();
+            updateLineNumbers();
+        }
+
+        function checkSolution() {
+            const userCode = editor.value;
+            let success = false;
+            let variablesScope = {};
+
+            try {
+                // Interceptamos la declaración de variables internas del estudiante para pruebas avanzadas (Reto 5)
+                let interceptCode = userCode
+                    .replace(/const\s+([a-zA-Z0-9_]+)/g, 'this.$1')
+                    .replace(/let\s+([a-zA-Z0-9_]+)/g, 'this.$1');
+
+                const evaluatorContext = new Function(interceptCode);
+                evaluatorContext.call(variablesScope);
+                
+                success = challenges[currentChallengeIndex].validate(userCode, variablesScope);
+            } catch (error) {
+                console.error(error);
+                success = false;
+            }
+
+            const status = document.getElementById('current-status');
+            if (success) {
+                status.textContent = '¡Clase gestionada correctamente! 🎉';
+                status.className = 'status-message success';
+                
+                let completed = JSON.parse(localStorage.getItem(moduleKey) || '[]');
+                if (!completed.includes(currentChallengeIndex)) {
+                    completed.push(currentChallengeIndex);
+                    localStorage.setItem(moduleKey, JSON.stringify(completed));
+                }
+                initNav();
+            } else {
+                status.textContent = 'La lista de clases no coincide ❌';
+                status.className = 'status-message pending';
+            }
+        }
+
+        function resetCode() {
+            loadChallenge(currentChallengeIndex);
+        }
+
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n').length;
+            document.getElementById('line-numbers').innerHTML = Array.from({length: Math.max(lines, 10)}, (_, i) => i + 1).join('<br>');
+        }
+
+        editor.addEventListener('input', updateLineNumbers);
+        
+        editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+                updateLineNumbers();
+            }
+        });
+
+        loadChallenge(0);
+    </script>
+</body>
+</html>
